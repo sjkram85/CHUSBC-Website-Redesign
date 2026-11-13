@@ -57,3 +57,6 @@ When a tournament is **certified completed** in Prism, Prism publishes the certi
 - Sorted by `published_at` (newest first). If a URL matches a static archive entry, the static entry is dropped.
 - Missing or empty index means the site shows the static archive only.
 - Future (phase 2): a Firebase Function endpoint Prism can POST to, which writes this same JSON. The schema stays stable for the desk.
+
+## Instagram feed (placeholder)
+The home page has a "From the Lanes" Instagram section and a footer badge, both marked coming soon. Once CHUSBC has an Instagram Business/Creator account, connect a feed through a server-side Instagram Graph API call (token kept off the browser) or a hosted embed widget, and swap the placeholder tiles for live posts.
