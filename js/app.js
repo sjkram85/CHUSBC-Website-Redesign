@@ -8,7 +8,8 @@
     tournaments: { to: EMAIL.manager, label: 'Association Manager', subject: 'Tournament question' },
     youth:       { to: EMAIL.manager, label: 'Association Manager', subject: 'Youth bowling / scholarship question' },
     manager:     { to: EMAIL.manager, label: 'Association Manager', subject: 'Membership / averages question' },
-    web:         { to: EMAIL.web,     label: 'Webmaster',           subject: 'Website / results question' }
+    web:         { to: EMAIL.web,     label: 'Webmaster',           subject: 'Website / results question' },
+    feedback:    { to: EMAIL.web,     label: 'Webmaster',           subject: 'Site feedback / enhancement idea' }
   };
   const PRISM_INDEX_URL = './results-index.json';
   let prismResults = [];
@@ -36,6 +37,7 @@
     });
     if (viewName === 'tournaments') setTournamentFilter(subParam || currentTournamentFilter || 'all');
     if (viewName === 'honors') setHonorsTab(subParam || 'hof');
+    if (viewName === 'contact') { const sel = document.getElementById('contact-category'); if (sel && subParam && ROUTES[subParam]) { sel.value = subParam; updateContactRoute(); } }
     const hash = '#' + viewName + (subParam ? '/' + subParam : '');
     if (!opts.fromHash && location.hash !== hash) history.replaceState(null, '', viewName === 'home' && !subParam ? location.pathname : hash);
     if (!opts.keepScroll) window.scrollTo({ top: 0, behavior: opts.instant ? 'auto' : 'smooth' });
@@ -245,6 +247,7 @@
     window.location.href = href;
     triggerToast('Opening your email app with a message to ' + EMAIL.manager + '. Press Send there to deliver it.');
   }
+  function openFeedback() { switchView('contact', 'feedback'); setTimeout(() => { const m = document.getElementById('contact-message'); if (m) m.focus({ preventScroll: true }); }, 300); }
   function updateContactRoute() {
     const r = ROUTES[document.getElementById('contact-category').value] || ROUTES.manager;
     document.getElementById('contact-route-note').innerHTML = 'Goes to: <strong>' + esc(r.to) + '</strong> (' + esc(r.label) + ')';
@@ -269,7 +272,7 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal('squad-modal'); });
 
   Object.assign(window, { switchView, toggleMobileMenu, setTournamentFilter, renderTournaments, setHonorsTab,
-    openSquadModal, closeModal, handleSquadSubmit, handleContactSubmit, updateContactRoute, triggerToast });
+    openSquadModal, closeModal, handleSquadSubmit, handleContactSubmit, updateContactRoute, triggerToast, openFeedback });
 
   document.addEventListener('DOMContentLoaded', () => {
     fillYearFilter(); renderHomeLatestResults(); renderTournaments(); renderHonors();

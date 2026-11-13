@@ -204,6 +204,10 @@
                     <span><i class="fa-solid fa-envelope w-6 text-navy"></i> Contact</span>
                     <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
                 </button>
+                <button onclick="toggleMobileMenu(); openFeedback()" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50">
+                    <span><i class="fa-solid fa-comment-dots w-6 text-navy"></i> Provide Feedback</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
                 <div class="pt-3 border-t border-slate-100">
                     <button onclick="toggleMobileMenu(); openSquadModal('69th Annual CHUSBC Open Championship')" class="w-full flex items-center justify-center gap-2 bg-gold text-navy font-bold py-3.5 rounded-xl shadow">
                         <i class="fa-solid fa-bowling-ball"></i>
@@ -909,6 +913,7 @@
                                         <option value="youth">Youth Bowling &amp; Scholarships</option>
                                         <option value="manager">Association Manager (Membership &amp; Averages)</option>
                                         <option value="web">Website, Results &amp; Records</option>
+                                        <option value="feedback">Provide Feedback (Site Ideas &amp; Enhancements)</option>
                                     </select>
                                 </div>
                                 <div><label for="contact-usbc" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5">USBC Member ID (optional)</label><input id="contact-usbc" type="text" class="w-full px-4 py-3 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:border-navy"></div>
@@ -1010,6 +1015,7 @@
                         <li><button onclick="switchView('tournaments', 'youth')" class="hover:text-white transition">Youth Bowling</button></li>
                         <li><button onclick="switchView('honors', 'hof')" class="hover:text-white transition">Hall of Fame</button></li>
                         <li><button onclick="switchView('contact')" class="hover:text-white transition">Contact Us</button></li>
+                        <li><button onclick="openFeedback()" class="hover:text-white transition"><i class="fa-solid fa-comment-dots text-[10px] mr-1 text-gold"></i>Provide Feedback</button></li>
                         <li><a href="directors.html" class="hover:text-white transition"><i class="fa-solid fa-lock text-[10px] mr-1 text-gold"></i>Director Login</a></li>
                     </ul>
                 </div>

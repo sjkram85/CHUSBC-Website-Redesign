@@ -13,7 +13,7 @@
  *
  * Bump CACHE_VERSION whenever the shell files change so old caches are dropped.
  */
-const CACHE_VERSION = 'chusbc-pwa-v1';
+const CACHE_VERSION = 'chusbc-pwa-v2';
 const SHELL_CACHE = 'chusbc-shell-' + CACHE_VERSION;
 const RUNTIME_CACHE = 'chusbc-runtime-' + CACHE_VERSION;
 
