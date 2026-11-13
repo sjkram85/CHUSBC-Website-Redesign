@@ -379,7 +379,26 @@
       return x.href;
     } catch (e) { return ''; }
   }
+  // Preview-only demo: ?livedemo=1 turns it on, ?livedemo=0 turns it off. Stored in THIS browser only; live.json is never changed.
+  const LIVE_DEMO_KEY = 'chusbc-livedemo';
+  const LIVE_DEMO = { live: true, title: 'Demo — LIVE from the Lanes', event: 'Preview demo (sample public Facebook video)',
+    facebook_video_url: 'https://www.facebook.com/facebook/videos/10153231379946729/', demo: true };
+  const liveDemoOn = () => { try { return localStorage.getItem(LIVE_DEMO_KEY) === '1'; } catch (e) { return false; } };
+  (function readLiveDemoParam() {
+    const m = /[?&]livedemo=([01])\b/.exec(location.search);
+    if (!m) return;
+    try { if (m[1] === '1') localStorage.setItem(LIVE_DEMO_KEY, '1'); else localStorage.removeItem(LIVE_DEMO_KEY); } catch (e) { /* storage blocked */ }
+    const qs = location.search.replace(/([?&])livedemo=[01]\b&?/, '$1').replace(/[?&]$/, '');
+    history.replaceState(null, '', location.pathname + qs + location.hash);
+  })();
+  function liveDemoOff() {
+    try { localStorage.removeItem(LIVE_DEMO_KEY); } catch (e) { /* ignore */ }
+    loadLive();
+    triggerToast('Live player demo turned off in this browser.');
+  }
   function renderLive(cfg) {
+    const realUrl = cfg && cfg.live === true ? fbVideoUrl(cfg.facebook_video_url) : '';
+    if (!realUrl && liveDemoOn()) cfg = LIVE_DEMO;   // a real stream always wins over the demo
     const url = cfg && cfg.live === true ? fbVideoUrl(cfg.facebook_video_url) : '';
     document.querySelectorAll('.live-slot').forEach((el) => {
       if (!url) { el.innerHTML = ''; el.classList.add('hidden'); return; }
@@ -398,6 +417,7 @@
             <p class="text-slate-200 text-sm sm:text-base font-semibold mt-1">${esc(title)}</p>
             ${ev ? `<p class="text-gold text-xs font-bold uppercase tracking-wide mt-1">${esc(ev)}</p>` : ''}
             <a href="${esc(url)}" target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-navy font-bold text-xs px-4 py-2 rounded-xl transition"><i class="fa-brands fa-facebook"></i> Watch on Facebook</a>
+            ${cfg.demo ? `<div class="mt-3 text-[11px] text-slate-400"><i class="fa-solid fa-flask text-gold mr-1"></i>Demo mode &middot; <button type="button" onclick="liveDemoOff()" class="underline font-bold text-gold hover:text-white">Turn off</button></div>` : ''}
           </div>
           <div class="relative w-full rounded-xl overflow-hidden bg-black ring-1 ring-white/10" style="aspect-ratio:16/9">
             <iframe src="${esc(src)}" title="${esc(title)} (Facebook Live)" class="absolute inset-0 w-full h-full" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
@@ -578,7 +598,7 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal('squad-modal'); closeModal('entry-modal'); } });
 
   Object.assign(window, { switchView, toggleMobileMenu, setTournamentFilter, renderTournaments, setHonorsTab,
-    openSquadModal, closeModal, handleSquadSubmit, handleContactSubmit, updateContactRoute, triggerToast, openFeedback, downloadIcs, openEntryModal, handleEntrySubmit });
+    openSquadModal, closeModal, handleSquadSubmit, handleContactSubmit, updateContactRoute, triggerToast, openFeedback, downloadIcs, openEntryModal, handleEntrySubmit, liveDemoOff });
 
   document.addEventListener('DOMContentLoaded', () => {
     fillYearFilter(); renderHomeLatestResults(); renderTournaments(); renderHonors(); renderBoard();

@@ -116,6 +116,22 @@
                 </div>
             </section>
 
+            <!-- Live Stream (demo): toggles a per-browser flag only; never changes live.json -->
+            <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-6 flex flex-col md:flex-row md:items-center justify-between gap-4" aria-labelledby="ls-title">
+                <div class="flex items-start gap-3">
+                    <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center shrink-0"><i class="fa-solid fa-video"></i></div>
+                    <div>
+                        <h2 id="ls-title" class="font-display text-lg font-bold text-navy uppercase flex items-center gap-2">Live Stream <span class="text-[10px] font-extrabold tracking-wider bg-gold text-navy px-2 py-0.5 rounded">Demo</span></h2>
+                        <p class="text-sm text-slate-600 mt-1">The &ldquo;LIVE from the Lanes&rdquo; player is hidden until a stream is on. Preview it in <strong>this browser only</strong> with a sample Facebook video. Nothing changes for visitors.</p>
+                        <p class="text-xs text-slate-500 mt-1">To go live for real, see <a href="https://github.com/sjkram85/CHUSBC-Website-Redesign/blob/main/docs/LIVE-STREAM.md" target="_blank" rel="noopener" class="font-bold text-gold-dark hover:underline">docs/LIVE-STREAM.md</a> (automatic after hosting).</p>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2 shrink-0">
+                    <a href="index.html?livedemo=1#home" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-navy font-bold px-4 py-2.5 rounded-xl text-sm transition"><i class="fa-solid fa-play"></i> Show live player demo</a>
+                    <a href="index.html?livedemo=0#home" class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-navy font-bold px-4 py-2.5 rounded-xl text-sm border border-slate-200 transition"><i class="fa-solid fa-power-off text-gold-dark"></i> Turn demo off</a>
+                </div>
+            </section>
+
             <!-- John's Upload Helper (demo): runs entirely in the browser. No upload, no Drive API, no keys. -->
             <section id="upload-helper" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" aria-labelledby="uh-title">
                 <div class="bg-navy text-white px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-4 border-gold">
