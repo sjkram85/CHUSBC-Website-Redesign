@@ -13,7 +13,7 @@
  *
  * Bump CACHE_VERSION whenever the shell files change so old caches are dropped.
  */
-const CACHE_VERSION = 'chusbc-pwa-v2';
+const CACHE_VERSION = 'chusbc-pwa-v3';
 const SHELL_CACHE = 'chusbc-shell-' + CACHE_VERSION;
 const RUNTIME_CACHE = 'chusbc-runtime-' + CACHE_VERSION;
 
@@ -28,10 +28,15 @@ const SHELL_ASSETS = [
   './js/install.js',
   './css/ask-chusbc.css',
   './assets/logo.jpg',
+  './assets/chusbc-badge.png',
+  './assets/chusbc-badge-512.webp',
   './assets/icons/icon-192.png',
   './assets/icons/icon-512.png',
   './assets/icons/icon-512-maskable.png',
   './assets/icons/apple-touch-icon.png',
+  './assets/icons/favicon-32.png',
+  './assets/icons/favicon-16.png',
+  './assets/icons/favicon.ico',
   './assets/forest-hill-lanes.jpg',
   './assets/apg-brewner-lanes.jpg',
   './assets/bowl-usbc-logo.svg',

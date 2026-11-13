@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cecil Harford USBC Association | Official Website (chusbc.org)</title>
     <meta name="description" content="Cecil Harford USBC Association — tournaments, results, youth bowling, Hall of Fame and association centers for Cecil &amp; Harford Counties, Maryland.">
-    <link rel="icon" href="assets/logo.jpg">
+    <link rel="icon" href="assets/icons/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#0F1E36">
     <meta name="mobile-web-app-capable" content="yes">
@@ -165,6 +167,9 @@
 
                 <!-- Desktop Right CTA -->
                 <div class="hidden lg:flex items-center gap-2">
+                    <button type="button" data-nav="get-the-app" onclick="switchView('get-the-app')" class="nav-btn inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-navy px-3 py-2 rounded-lg hover:bg-slate-50 transition">
+                        <i class="fa-solid fa-mobile-screen-button text-xs"></i><span class="whitespace-nowrap">Get the App</span>
+                    </button>
                     <a href="directors.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-navy px-3 py-2 rounded-lg hover:bg-slate-50 transition">
                         <i class="fa-solid fa-lock text-xs"></i><span class="whitespace-nowrap">Directors</span>
                     </a>
@@ -206,6 +211,10 @@
                 </button>
                 <button onclick="toggleMobileMenu(); openFeedback()" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50">
                     <span><i class="fa-solid fa-comment-dots w-6 text-navy"></i> Provide Feedback</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+                <button data-mobile-nav="get-the-app" onclick="switchView('get-the-app'); toggleMobileMenu()" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50">
+                    <span><i class="fa-solid fa-mobile-screen-button w-6 text-gold-dark"></i> Get the App</span>
                     <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
                 </button>
                 <div class="pt-3 border-t border-slate-100">
@@ -982,6 +991,94 @@
             </div>
         </section>
 
+        <!-- =====================================================================
+             VIEW 5: GET THE APP
+        ====================================================================== -->
+        <section id="view-get-the-app" class="view-section hidden">
+            <div class="bg-navy text-white py-10 border-b border-white/10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row sm:items-center gap-6">
+                    <picture class="shrink-0">
+                        <source type="image/webp" srcset="assets/chusbc-badge-512.webp">
+                        <img src="assets/chusbc-badge.png" alt="Cecil Harford USBC Association badge" width="160" height="160" class="w-28 h-28 sm:w-36 sm:h-36 drop-shadow-lg">
+                    </picture>
+                    <div>
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-amber-400">Home Screen</span>
+                        <h1 class="font-display text-3xl sm:text-4xl font-bold uppercase mt-1">Get the App</h1>
+                        <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl">
+                            Add CHUSBC to your iPhone or Android home screen. It opens full screen like an app, and it updates itself when you use it — nothing to download from an app store.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex items-center gap-5">
+                    <img src="assets/icons/icon-192.png" alt="CHUSBC app icon — a bowling pin, ball, and two mallards on royal blue" width="80" height="80" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shadow-md shrink-0">
+                    <div>
+                        <h2 class="font-display text-xl font-bold text-navy uppercase">Look for this icon</h2>
+                        <p class="text-slate-600 text-sm mt-1">After you add it, this mark will sit on your home screen. Tap it anytime to open the CHUSBC site full screen.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center"><i class="fa-brands fa-apple text-xl"></i></div>
+                            <div>
+                                <span class="text-xs font-extrabold uppercase tracking-widest text-gold-dark">iPhone &amp; iPad</span>
+                                <h2 class="font-display text-2xl font-bold text-navy uppercase leading-tight">Safari</h2>
+                            </div>
+                        </div>
+                        <ol class="space-y-3.5 m-0 p-0 list-none">
+                            <li class="flex gap-3 items-start">
+                                <span class="shrink-0 w-7 h-7 rounded-full bg-navy text-gold font-bold text-sm flex items-center justify-center">1</span>
+                                <p class="pt-0.5 text-sm text-slate-700 m-0">Open this site in <strong>Safari</strong>.</p>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="shrink-0 w-7 h-7 rounded-full bg-navy text-gold font-bold text-sm flex items-center justify-center">2</span>
+                                <p class="pt-0.5 text-sm text-slate-700 m-0">Tap the <strong>Share</strong> button (the square with the arrow <i class="fa-solid fa-arrow-up-from-square text-gold-dark" aria-hidden="true"></i>).</p>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="shrink-0 w-7 h-7 rounded-full bg-navy text-gold font-bold text-sm flex items-center justify-center">3</span>
+                                <p class="pt-0.5 text-sm text-slate-700 m-0">Tap <strong>Add to Home Screen</strong>.</p>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="shrink-0 w-7 h-7 rounded-full bg-navy text-gold font-bold text-sm flex items-center justify-center">4</span>
+                                <p class="pt-0.5 text-sm text-slate-700 m-0">Tap <strong>Add</strong>.</p>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+                        <div class="flex items-center gap-3 mb-5">
+                            <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center"><i class="fa-brands fa-android text-xl"></i></div>
+                            <div>
+                                <span class="text-xs font-extrabold uppercase tracking-widest text-gold-dark">Android</span>
+                                <h2 class="font-display text-2xl font-bold text-navy uppercase leading-tight">Chrome</h2>
+                            </div>
+                        </div>
+                        <ol class="space-y-3.5 m-0 p-0 list-none">
+                            <li class="flex gap-3 items-start">
+                                <span class="shrink-0 w-7 h-7 rounded-full bg-navy text-gold font-bold text-sm flex items-center justify-center">1</span>
+                                <p class="pt-0.5 text-sm text-slate-700 m-0">Open this site in <strong>Chrome</strong>.</p>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <span class="shrink-0 w-7 h-7 rounded-full bg-navy text-gold font-bold text-sm flex items-center justify-center">2</span>
+                                <p class="pt-0.5 text-sm text-slate-700 m-0">Tap the <strong>Install app</strong> banner, or open the menu <strong>⋮</strong> and tap <strong>Install app</strong> / <strong>Add to Home screen</strong>.</p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="bg-gold-light border border-gold/40 rounded-2xl p-5 sm:p-6 text-sm text-navy flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <p class="m-0"><i class="fa-solid fa-circle-info text-gold-dark mr-1.5" aria-hidden="true"></i><strong>It opens full screen like an app</strong> and updates itself when you visit — you don’t need to install new versions from a store.</p>
+                    <button type="button" onclick="openFeedback()" class="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-navy hover:bg-navy-light text-gold font-bold text-sm">
+                        <i class="fa-solid fa-comment-dots" aria-hidden="true"></i> Send feedback
+                    </button>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- =====================================================================
@@ -1016,6 +1113,7 @@
                         <li><button onclick="switchView('honors', 'hof')" class="hover:text-white transition">Hall of Fame</button></li>
                         <li><button onclick="switchView('contact')" class="hover:text-white transition">Contact Us</button></li>
                         <li><button onclick="openFeedback()" class="hover:text-white transition"><i class="fa-solid fa-comment-dots text-[10px] mr-1 text-gold"></i>Provide Feedback</button></li>
+                        <li><button onclick="switchView('get-the-app')" class="hover:text-white transition">Get the App</button></li>
                         <li><a href="directors.html" class="hover:text-white transition"><i class="fa-solid fa-lock text-[10px] mr-1 text-gold"></i>Director Login</a></li>
                     </ul>
                 </div>

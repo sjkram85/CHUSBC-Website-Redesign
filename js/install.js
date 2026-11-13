@@ -71,14 +71,15 @@
     bar.className = 'bg-navy text-white border-b-4 border-gold';
     bar.innerHTML =
       '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-start sm:items-center gap-3">' +
-        '<span class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden" aria-hidden="true">' +
-          '<img src="assets/icons/apple-touch-icon.png" alt="" width="32" height="32" class="w-8 h-8">' +
+        '<span class="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-sm" aria-hidden="true">' +
+          '<img src="assets/icons/apple-touch-icon.png" alt="" width="40" height="40" class="w-10 h-10 object-cover">' +
         '</span>' +
         '<p class="text-sm leading-snug flex-1 m-0">' +
           '<strong class="font-display font-bold uppercase tracking-wide">Add CHUSBC to your Home Screen.</strong> ' +
           'Tap the <strong>Share</strong> button ' +
           '<i class="fa-solid fa-arrow-up-from-square text-gold" aria-hidden="true"></i> ' +
-          'then <strong>Add to Home Screen</strong>. You’ll get a full-screen app icon.' +
+          'then <strong>Add to Home Screen</strong>. You’ll get a full-screen app icon. ' +
+          '<a href="#get-the-app" class="text-gold font-bold hover:underline whitespace-nowrap">See how</a>' +
         '</p>' +
         '<button type="button" id="chusbc-ios-install-dismiss" class="shrink-0 w-9 h-9 rounded-lg hover:bg-white/10 text-white" aria-label="Dismiss">' +
           '<i class="fa-solid fa-xmark" aria-hidden="true"></i>' +
@@ -101,13 +102,14 @@
     bar.className = 'bg-navy text-white border-b-4 border-gold';
     bar.innerHTML =
       '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-3 flex-wrap sm:flex-nowrap">' +
-        '<span class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 overflow-hidden" aria-hidden="true">' +
-          '<img src="assets/icons/icon-192.png" alt="" width="32" height="32" class="w-8 h-8">' +
+        '<span class="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-sm" aria-hidden="true">' +
+          '<img src="assets/icons/icon-192.png" alt="" width="40" height="40" class="w-10 h-10 object-cover">' +
         '</span>' +
         '<p class="text-sm leading-snug flex-1 m-0">' +
           '<strong class="font-display font-bold uppercase tracking-wide">Install the CHUSBC app.</strong> ' +
           'Add it to your home screen for faster access and a full-screen experience.' +
         '</p>' +
+        '<a href="#get-the-app" class="shrink-0 text-gold font-bold text-sm hover:underline whitespace-nowrap">How to</a>' +
         '<button type="button" id="chusbc-android-install-btn" class="shrink-0 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-gold hover:bg-gold-hover text-navy font-bold text-sm">' +
           '<i class="fa-solid fa-download" aria-hidden="true"></i> Install app' +
         '</button>' +
