@@ -409,27 +409,41 @@
                 </div>
             </div>
 
-            <!-- Follow Us: Facebook (live) + Instagram (coming soon) -->
-            <div id="follow-us" class="bg-slatebg border-t border-slate-200 py-12">
+            <!-- Instagram feed (placeholder until the CHUSBC account is created and connected) -->
+            <div id="instagram-feed" class="bg-slatebg border-t border-slate-200 pt-14 pb-8">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="mb-6">
-                        <p class="text-xs font-bold uppercase tracking-widest text-gold-dark">Stay Connected</p>
-                        <h2 class="font-display text-3xl font-bold text-navy uppercase mt-1">Follow Us</h2>
-                    </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-                        <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex flex-col">
-                            <div class="flex items-center justify-between gap-3 mb-4">
-                                <span class="font-display text-lg font-bold text-navy uppercase flex items-center gap-2"><i class="fa-brands fa-facebook text-[#1877F2]"></i> Latest on Facebook</span>
-                                <a href="https://www.facebook.com/chusbca/" target="_blank" rel="noopener noreferrer" class="text-sm font-bold text-gold-dark hover:underline">@chusbca <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
-                            </div>
-                            <iframe title="Cecil Harford USBC on Facebook" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fchusbca%2F&amp;tabs=timeline&amp;width=500&amp;height=330&amp;small_header=true&amp;adapt_container_width=true&amp;hide_cover=true&amp;show_facepile=false" width="500" height="330" style="border:none;overflow:hidden;width:100%;max-width:500px" scrolling="no" frameborder="0" loading="lazy" allow="clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+                        <div class="max-w-2xl">
+                            <p class="text-xs font-bold uppercase tracking-widest text-gold-dark flex items-center gap-2"><i class="fa-brands fa-instagram"></i> On Instagram</p>
+                            <h2 class="font-display text-3xl font-bold text-navy uppercase mt-2">From the Lanes</h2>
+                            <p class="text-slate-600 mt-2">Photos from tournaments, youth events and our centers will show up here once the CHUSBC Instagram account is live.</p>
                         </div>
-                        <div class="bg-navy rounded-2xl p-6 text-white flex flex-col justify-between">
-                            <div>
-                                <span class="font-display text-lg font-bold uppercase flex items-center gap-2"><i class="fa-brands fa-instagram text-gold"></i> Instagram</span>
-                                <p class="text-sm text-slate-300 mt-2">Photos from tournaments, youth events and our centers. Coming soon.</p>
-                            </div>
-                            <span class="mt-6 inline-flex items-center justify-center gap-2 bg-white/10 text-slate-300 font-bold text-sm px-5 py-3 rounded-xl cursor-not-allowed"><i class="fa-brands fa-instagram"></i> Coming soon</span>
+                        <span class="inline-flex items-center gap-2 self-start sm:self-auto bg-white border border-slate-300 text-slate-500 font-bold text-sm px-5 py-3 rounded-xl cursor-not-allowed" title="Instagram account coming soon"><i class="fa-brands fa-instagram"></i> Follow us (coming soon)</span>
+                    </div>
+                    <div class="grid grid-cols-3 md:grid-cols-6 gap-3 opacity-80" aria-hidden="true">
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-gold/70 text-3xl"><i class="fa-solid fa-bowling-ball"></i></div>
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-gold/70 text-3xl"><i class="fa-solid fa-trophy"></i></div>
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-gold/70 text-3xl"><i class="fa-solid fa-camera"></i></div>
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-gold/70 text-3xl"><i class="fa-solid fa-people-group"></i></div>
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-gold/70 text-3xl"><i class="fa-solid fa-medal"></i></div>
+                        <div class="aspect-square rounded-xl bg-gradient-to-br from-navy to-navy-light flex items-center justify-center text-gold/70 text-3xl"><i class="fa-solid fa-child-reaching"></i></div>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-4">Feed coming soon.</p>
+                </div>
+            </div>
+
+            <!-- Facebook feed (compact; live Page Plugin for facebook.com/chusbca) -->
+            <div id="facebook-feed" class="bg-slatebg pb-14">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                        <div class="md:col-span-2">
+                            <p class="text-xs font-bold uppercase tracking-widest text-gold-dark flex items-center gap-2"><i class="fa-brands fa-facebook"></i> On Facebook</p>
+                            <h3 class="font-display text-xl font-bold text-navy uppercase mt-1">Association News</h3>
+                            <p class="text-sm text-slate-600 mt-1">Tournament updates and announcements from @chusbca.</p>
+                            <a href="https://www.facebook.com/chusbca/" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 bg-[#1877F2] hover:bg-[#1465d0] text-white font-bold text-sm px-4 py-2.5 rounded-xl transition"><i class="fa-brands fa-facebook-f"></i> Follow</a>
+                        </div>
+                        <div class="md:col-span-3 md:justify-self-end w-full max-w-[500px]">
+                            <iframe title="Cecil Harford USBC on Facebook" src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fchusbca%2F&amp;tabs=timeline&amp;width=500&amp;height=320&amp;small_header=true&amp;adapt_container_width=true&amp;hide_cover=true&amp;show_facepile=false" width="500" height="320" style="border:none;overflow:hidden;width:100%;max-width:500px" scrolling="no" frameborder="0" loading="lazy" allow="clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
                         </div>
                     </div>
                 </div>
