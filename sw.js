@@ -6,14 +6,17 @@
  *
  * Strategies:
  *   - App shell: precached on install
- *   - results-index.json and HTML navigations: network-first (stay fresh)
+ *   - Live feeds (results-index.json, events.json) and HTML navigations:
+ *     network-first, so a new Prism publish or calendar refresh shows up on the
+ *     next load. The page adds ?v=<minute> to feed requests to skip the CDN
+ *     cache; the worker stores ONE copy per feed (query stripped) for offline use.
  *   - Static assets (js/css/images/fonts): cache-first
  *   - directors.html: network-only, never cached (staff portal)
  *   - Offline fallback: offline.html for failed navigations
  *
  * Bump CACHE_VERSION whenever the shell files change so old caches are dropped.
  */
-const CACHE_VERSION = 'chusbc-pwa-v4';
+const CACHE_VERSION = 'chusbc-pwa-v5';
 const SHELL_CACHE = 'chusbc-shell-' + CACHE_VERSION;
 const RUNTIME_CACHE = 'chusbc-runtime-' + CACHE_VERSION;
 
@@ -65,8 +68,13 @@ function isDirectors(url) {
   return /\/directors\.html$/i.test(url.pathname);
 }
 
-function isResultsIndex(url) {
-  return /\/results-index\.json$/i.test(url.pathname);
+function isLiveFeed(url) {
+  return /\/(?:results-index|events)\.json$/i.test(url.pathname);
+}
+
+// One cache entry per feed, whatever cache-busting query the page used.
+function feedKey(url) {
+  return url.origin + url.pathname;
 }
 
 function isNavigation(request, url) {
@@ -102,19 +110,18 @@ self.addEventListener('activate', (event) => {
       .filter((key) => !keep.has(key))
       .map((key) => caches.delete(key)));
     await self.clients.claim();
-    // Warm a fresh copy of the results feed (not a precache). If the first
-    // page load fetched results before this worker was in control, the data
+    // Warm fresh copies of the live feeds (not a precache). If the first
+    // page load fetched them before this worker was in control, the data
     // is still available offline until the next network-first refresh.
-    try {
-      const req = new Request(resolve('./results-index.json'), { cache: 'reload' });
-      const res = await fetch(req);
-      if (res && res.ok) {
-        const cache = await caches.open(RUNTIME_CACHE);
-        await cache.put(req, res);
+    const cache = await caches.open(RUNTIME_CACHE);
+    await Promise.all(['./results-index.json', './events.json'].map(async (path) => {
+      try {
+        const res = await fetch(new Request(resolve(path), { cache: 'no-store' }));
+        if (res && res.ok) await cache.put(resolve(path), res);
+      } catch (err) {
+        console.warn('[chusbc-sw] feed cache warm failed', path, err);
       }
-    } catch (err) {
-      console.warn('[chusbc-sw] results cache warm failed', err);
-    }
+    }));
   })());
 });
 
@@ -135,9 +142,9 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Certified results feed: network-first so new Prism entries show up promptly.
-  if (sameOrigin(url) && isResultsIndex(url)) {
-    event.respondWith(networkFirst(request, RUNTIME_CACHE));
+  // Live feeds (Prism results, calendar events): network-first so new entries show up promptly.
+  if (sameOrigin(url) && isLiveFeed(url)) {
+    event.respondWith(networkFirstFeed(request, url));
     return;
   }
 
@@ -154,16 +161,17 @@ self.addEventListener('fetch', (event) => {
   }
 });
 
-async function networkFirst(request, cacheName) {
-  const cache = await caches.open(cacheName);
+async function networkFirstFeed(request, url) {
+  const cache = await caches.open(RUNTIME_CACHE);
+  const key = feedKey(url);
   try {
-    const response = await fetch(request);
-    if (response && response.ok) {
-      cache.put(request, response.clone());
-    }
+    // Always ask the network, bypassing the HTTP cache.
+    const response = await fetch(request.url, { cache: 'no-store', credentials: 'same-origin' });
+    if (response && response.ok) cache.put(key, response.clone());
     return response;
   } catch (err) {
-    const cached = await cache.match(request);
+    // Offline only: fall back to the last good copy.
+    const cached = await cache.match(key);
     if (cached) return cached;
     throw err;
   }

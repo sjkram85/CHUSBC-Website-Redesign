@@ -1,5 +1,6 @@
 /* CHUSBC v2 preview — app logic (based on the Gemini layout).
-   Data: js/site-data.js (static, from chusbc.org) + ./results-index.json (Prism-certified results, loaded at runtime). */
+   Data: js/site-data.js (static, from chusbc.org) + ./results-index.json (Prism-certified results) + ./events.json
+   (upcoming events from the CHUSBC Google Calendar), both loaded at runtime and both optional. */
 (function () {
   'use strict';
   const D = window.CHUSBC_DATA || { tournaments: [], results: [], hallOfFame: [], scholarships: [] };
@@ -12,11 +13,20 @@
     feedback:    { to: EMAIL.web,     label: 'Webmaster',           subject: 'Site feedback / enhancement idea' }
   };
   const PRISM_INDEX_URL = './results-index.json';
+  const EVENTS_URL = './events.json';
+  const NEW_DAYS = 14;
   let prismResults = [];
+  let calEvents = [];
   let currentTournamentFilter = 'all';
 
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const safeUrl = (u) => (/^https:\/\//i.test(u || '') || /^\.?\/?[\w\-./]+\.pdf$/i.test(u || '')) ? u : '';
+  // Live feeds: add a per-minute query so the GitHub Pages CDN (max-age=600) and the browser never hand back an old copy.
+  const feedUrl = (u) => u + '?v=' + Math.floor(Date.now() / 60000);
+  const normTitle = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\b(certified|official|final|unofficial|results?|standings|the)\b/g, ' ').replace(/\s+/g, ' ').trim();
+  const driveId = (u) => { const m = String(u || '').match(/\/d\/([\w-]{10,})|[?&]id=([\w-]{10,})/); return m ? (m[1] || m[2]) : ''; };
+  const fmtDate = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   const ext = (u) => { const m = (u || '').split('?')[0].match(/\.(pdf|xlsx?|docx?)$/i); return m ? m[1].toUpperCase() : 'PDF'; };
 
   /* ---------------- Navigation (+ hash routing so links like #honors/hof work) ---------------- */
@@ -61,13 +71,18 @@
 
   /* ---------------- Results (static archive + Prism-certified) ---------------- */
   function allResults() {
-    const seen = new Set(prismResults.map((r) => r.url));
-    return prismResults.concat(D.results.filter((r) => !seen.has(r.url)));
+    // Prism entries first (newest published first); drop static archive rows that point at the same file or the same event + year.
+    const urls = new Set(), ids = new Set(), keys = new Set();
+    prismResults.forEach((r) => { if (r.url) urls.add(r.url); if (driveId(r.url)) ids.add(driveId(r.url)); keys.add(r.year + '|' + normTitle(r.title)); });
+    return prismResults.concat(D.results.filter((r) => !(urls.has(r.url) || (driveId(r.url) && ids.has(driveId(r.url))) || keys.has(String(r.year) + '|' + normTitle(r.title)))));
   }
   function resultBadge(r) {
-    return r.certified
-      ? '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold uppercase bg-gold text-navy"><i class="fa-solid fa-circle-check"></i> Certified &middot; Published by Prism</span>'
-      : '<span class="px-2 py-0.5 rounded text-[11px] font-bold uppercase bg-emerald-100 text-emerald-800">Posted</span>';
+    if (!r.certified) return '<span class="px-2 py-0.5 rounded text-[11px] font-bold uppercase bg-emerald-100 text-emerald-800">Posted</span>';
+    return (r.isNew ? '<span class="px-2 py-0.5 rounded text-[11px] font-extrabold uppercase tracking-wider bg-gold text-navy ring-1 ring-navy/20">New</span>' : '') +
+      '<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold uppercase bg-gold text-navy"><i class="fa-solid fa-circle-check"></i> Certified &middot; Published by Prism</span>';
+  }
+  function publishedLine(r) {
+    return r.certified && r.publishedLabel ? `<span class="text-xs font-semibold text-gold-dark">Published ${esc(r.publishedLabel)}</span>` : '';
   }
   function resultLinks(r, compact) {
     const btn = compact
@@ -87,7 +102,7 @@
         <div class="flex items-start sm:items-center gap-3.5">
           <div class="w-10 h-10 rounded-xl ${r.certified ? 'bg-gold text-navy' : 'bg-gold-light text-gold-dark'} flex items-center justify-center shrink-0"><i class="fa-solid ${r.certified ? 'fa-certificate' : 'fa-file-pdf'} text-lg"></i></div>
           <div>
-            <div class="flex flex-wrap items-center gap-2">${resultBadge(r)}<span class="text-xs font-semibold text-slate-500">${esc(r.year)} Season</span></div>
+            <div class="flex flex-wrap items-center gap-2">${resultBadge(r)}<span class="text-xs font-semibold text-slate-500">${esc(r.year)} Season</span>${publishedLine(r)}</div>
             <h3 class="font-bold text-navy text-sm sm:text-base mt-0.5">${esc(r.title)}</h3>
             ${r.meta ? `<div class="text-xs text-slate-500">${esc(r.meta)}</div>` : ''}
           </div>
@@ -102,21 +117,164 @@
     sel.innerHTML = '<option value="all">All Years</option>' + years.map((y) => `<option value="${esc(y)}">${esc(y)} Season</option>`).join('');
     sel.value = years.includes(cur) ? cur : 'all';
   }
+  function parsePrismIndex(idx) {
+    const now = Date.now();
+    const evs = idx && typeof idx === 'object' && Array.isArray(idx.events) ? idx.events : [];
+    const byKey = new Map();
+    evs.forEach((e) => {
+      if (!e || typeof e !== 'object' || typeof e.event_name !== 'string' || !e.event_name.trim()) return; // skip malformed rows
+      const fileId = /^[\w-]{10,}$/.test(e.pdf_file_id || '') ? e.pdf_file_id : '';
+      const url = safeUrl(e.pdf_url) || (fileId ? 'https://drive.google.com/file/d/' + encodeURIComponent(fileId) + '/view' : '');
+      const dateOk = /^\d{4}-\d{2}-\d{2}$/.test(e.event_date || '');
+      const year = /^\d{4}$/.test(String(e.year || '')) ? String(e.year) : (dateOk ? e.event_date.slice(0, 4) : '');
+      const pub = e.published_at ? new Date(e.published_at) : null;
+      const pubMs = pub && !isNaN(pub) ? pub.getTime() : 0;
+      const r = {
+        certified: true, year: year, title: e.event_name.trim(), url: url, file: '',
+        meta: [dateOk ? fmtDate(new Date(e.event_date + 'T12:00:00')) : '', typeof e.host_center === 'string' ? e.host_center : ''].filter(Boolean).join(' · '),
+        published_at: pubMs, publishedLabel: pubMs ? fmtDate(new Date(pubMs)) : '',
+        isNew: pubMs > 0 && now - pubMs <= NEW_DAYS * 86400000 && pubMs <= now + 86400000,
+        tournament_id: e.tournament_id || ''
+      };
+      // One row per tournament: a re-publish replaces the older entry.
+      const key = r.tournament_id ? 'id:' + r.tournament_id : (fileId ? 'f:' + fileId : (url ? 'u:' + url : 't:' + year + '|' + normTitle(r.title)));
+      const prev = byKey.get(key);
+      if (!prev || r.published_at >= prev.published_at) byKey.set(key, r);
+    });
+    return Array.from(byKey.values()).sort((a, b) => b.published_at - a.published_at);
+  }
   async function loadPrismResults() {
     try {
-      const res = await fetch(PRISM_INDEX_URL, { cache: 'no-store' });
-      if (!res.ok) return;
-      const idx = await res.json();
-      const evs = Array.isArray(idx.events) ? idx.events : [];
-      prismResults = evs.map((e) => {
-        const url = safeUrl(e.pdf_url) || (e.pdf_file_id ? 'https://drive.google.com/file/d/' + encodeURIComponent(e.pdf_file_id) + '/view' : '');
-        const year = e.year || (e.event_date ? String(e.event_date).slice(0, 4) : '');
-        const when = e.event_date ? new Date(e.event_date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
-        return { certified: true, year: String(year), title: e.event_name || 'Certified results', url: url, file: '',
-                 meta: [when, e.host_center].filter(Boolean).join(' · '), published_at: e.published_at || '', tournament_id: e.tournament_id || '' };
-      }).sort((a, b) => String(b.published_at).localeCompare(String(a.published_at)));
-    } catch (err) { /* index missing or offline: static archive only */ }
+      const res = await fetch(feedUrl(PRISM_INDEX_URL), { cache: 'no-store' });
+      if (res.ok) prismResults = parsePrismIndex(await res.json());
+    } catch (err) { /* index missing, malformed or offline: static archive only */ prismResults = []; }
     fillYearFilter(); renderHomeLatestResults(); renderTournaments();
+  }
+
+  /* ---------------- Upcoming events: deadlines + Add to calendar ---------------- */
+  const DAY = 86400000;
+  const parseDay = (v) => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(v || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; };
+  const isTimed = (v) => /T\d{2}:\d{2}/.test(v || '');
+  const today0 = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+  function upcomingEvents() {
+    const list = D.tournaments.filter((t) => t.status === 'upcoming' && Array.isArray(t.sessions) && t.sessions.length).map((t) => ({
+      id: t.id, title: t.title, sessions: t.sessions.map((x) => ({ start: x.start, end: x.end || x.start })),
+      location: t.location || t.center || '', description: t.summary || '', deadline: t.deadline || '', url: t.entryUrl || t.pageUrl || '', fromCalendar: false }));
+    // events.json (CHUSBC Google Calendar) wins when it has the same event; extra calendar events are added.
+    const claimed = new Set();
+    calEvents.forEach((c) => {
+      const hit = list.find((t) => (c.id && c.id === t.id) || normTitle(c.title) === normTitle(t.title));
+      const sess = { start: c.start, end: c.end || c.start };
+      if (hit) {
+        if (!claimed.has(hit.id)) { hit.sessions = []; claimed.add(hit.id); }
+        hit.sessions.push(sess); hit.fromCalendar = true;
+        if (c.deadline) hit.deadline = c.deadline;
+        if (c.location) hit.location = c.location;
+      } else {
+        const id = c.id || 'cal-' + normTitle(c.title).replace(/ /g, '-');
+        const same = list.find((t) => t.id === id);
+        if (same) same.sessions.push(sess);
+        else list.push({ id: id, title: c.title, sessions: [sess], location: c.location || '', description: c.description || '', deadline: c.deadline || '', url: c.url || '', fromCalendar: true });
+      }
+    });
+    list.forEach((t) => t.sessions.sort((a, b) => String(a.start).localeCompare(String(b.start))));
+    return list;
+  }
+  const findEvent = (id) => upcomingEvents().find((t) => t.id === id);
+  const lastDay = (ev) => parseDay(ev.sessions[ev.sessions.length - 1].end);
+  const isOver = (ev) => { const d = lastDay(ev); return !d || d < today0(); };
+  function deadlineInfo(ev) {
+    const d = parseDay(ev.deadline);
+    if (!d) return null;
+    const days = Math.round((d - today0()) / DAY);
+    if (days < 0) return { passed: true, text: 'Deadline passed', sub: 'Entry deadline was ' + fmtDate(d) };
+    if (days === 0) return { passed: false, text: 'Deadline today', sub: 'Entry deadline ' + fmtDate(d) };
+    return { passed: false, text: days + (days === 1 ? ' day left' : ' days left'), sub: 'Entry deadline ' + fmtDate(d) };
+  }
+  function deadlineBadge(ev) {
+    const i = deadlineInfo(ev);
+    if (!i) return '';
+    const cls = i.passed ? 'bg-red-50 text-red-700 border-red-200' : 'bg-gold-light text-gold-dark border-gold/40';
+    return `<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md border text-[11px] font-bold uppercase tracking-wide ${cls}"><i class="fa-solid ${i.passed ? 'fa-hourglass-end' : 'fa-hourglass-half'}"></i>${esc(i.text)}</span> <span class="text-slate-500 text-xs">${esc(i.sub)}</span>`;
+  }
+  const ymd = (d) => d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
+  const utcStamp = (d) => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  function sessionRange(x) {
+    if (isTimed(x.start)) { const a = new Date(x.start), b = new Date(isTimed(x.end) ? x.end : a.getTime() + 4 * 3600000); return { timed: true, s: utcStamp(a), e: utcStamp(b) }; }
+    const a = parseDay(x.start), b = parseDay(x.end) || a;
+    return { timed: false, s: ymd(a), e: ymd(new Date(b.getFullYear(), b.getMonth(), b.getDate() + 1)) }; // iCal/Google all-day end is exclusive
+  }
+  function eventDetails(ev) {
+    const lines = [];
+    if (ev.sessions.length > 1) lines.push('Dates: ' + ev.sessions.map((x) => { const a = parseDay(x.start), b = parseDay(x.end); return a ? fmtDate(a) + (b && +b !== +a ? ' – ' + fmtDate(b) : '') : ''; }).join(' and '));
+    const d = parseDay(ev.deadline); if (d) lines.push('Entry deadline: ' + fmtDate(d));
+    if (ev.description) lines.push(ev.description);
+    if (ev.url) lines.push('Entry form / info: ' + ev.url);
+    lines.push('Cecil Harford USBC · chusbc.org');
+    return lines.join('\n');
+  }
+  function icsText(ev) {
+    const escT = (v) => String(v || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+    const fold = (line) => { const out = []; while (line.length > 74) { out.push(line.slice(0, 74)); line = ' ' + line.slice(74); } out.push(line); return out.join('\r\n'); };
+    const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Cecil Harford USBC//chusbc.org//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH'];
+    const stamp = utcStamp(new Date());
+    ev.sessions.forEach((x, i) => {
+      const r = sessionRange(x);
+      L.push('BEGIN:VEVENT', 'UID:' + ev.id + '-' + (i + 1) + '-' + r.s + '@chusbc.org', 'DTSTAMP:' + stamp,
+        r.timed ? 'DTSTART:' + r.s : 'DTSTART;VALUE=DATE:' + r.s, r.timed ? 'DTEND:' + r.e : 'DTEND;VALUE=DATE:' + r.e,
+        'SUMMARY:' + escT(ev.title + (ev.sessions.length > 1 ? ' (weekend ' + (i + 1) + ' of ' + ev.sessions.length + ')' : '')),
+        'LOCATION:' + escT(ev.location), 'DESCRIPTION:' + escT(eventDetails(ev)));
+      if (/^https:\/\//.test(ev.url)) L.push('URL:' + ev.url);
+      L.push('END:VEVENT');
+    });
+    L.push('END:VCALENDAR');
+    return L.map(fold).join('\r\n') + '\r\n';
+  }
+  function downloadIcs(id) {
+    const ev = findEvent(id); if (!ev) return;
+    const blob = new Blob([icsText(ev)], { type: 'text/calendar;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = (normTitle(ev.title).replace(/ /g, '-') || 'chusbc-event') + '.ics';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    triggerToast('Calendar file downloaded. Open it to add “' + ev.title + '” to your calendar.');
+  }
+  function googleCalUrl(ev) {
+    const x = ev.sessions.find((s) => { const e = parseDay(s.end); return e && e >= today0(); }) || ev.sessions[0];
+    const r = sessionRange(x);
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(ev.title) + '&dates=' + r.s + '/' + r.e +
+      '&location=' + encodeURIComponent(ev.location) + '&details=' + encodeURIComponent(eventDetails(ev));
+  }
+  function calButtons(ev, size) {
+    if (isOver(ev)) return '';
+    const sm = size === 'sm';
+    const base = sm ? 'text-[11px] px-2.5 py-1.5' : 'text-xs px-3 py-2';
+    const ics = `<button type="button" onclick="downloadIcs('${esc(ev.id)}')" class="inline-flex items-center gap-1.5 ${base} rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-navy font-bold transition" title="Download an .ics file for Apple, Outlook or Google Calendar"><i class="fa-regular fa-calendar-plus text-gold-dark"></i> Add to calendar</button>`;
+    const g = `<a href="${esc(googleCalUrl(ev))}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 ${base} rounded-lg text-slate-600 hover:text-navy font-semibold transition" title="${ev.sessions.length > 1 ? 'Adds the next weekend; all dates are listed in the event details' : 'Open in Google Calendar'}"><i class="fa-brands fa-google text-gold-dark"></i> Google</a>`;
+    return ics + g;
+  }
+  function renderCalendarBits() {
+    document.querySelectorAll('[data-cal-deadline]').forEach((el) => { const ev = findEvent(el.dataset.calDeadline); const h = ev && deadlineBadge(ev); if (h) el.innerHTML = h; });
+    document.querySelectorAll('[data-cal-buttons]').forEach((el) => { const ev = findEvent(el.dataset.calButtons); const h = ev ? calButtons(ev) : ''; el.innerHTML = h; el.classList.toggle('hidden', !h); });
+    document.querySelectorAll('[data-cal-inline]').forEach((el) => {
+      const ev = findEvent(el.dataset.calInline);
+      el.innerHTML = ev && !isOver(ev) ? ` &middot; <button type="button" onclick="downloadIcs('${esc(ev.id)}')" class="underline font-semibold text-amber-200 hover:text-white"><i class="fa-regular fa-calendar-plus mr-0.5"></i>Add to calendar</button>` : '';
+    });
+  }
+  function parseEventsFile(j) {
+    const evs = j && typeof j === 'object' && Array.isArray(j.events) ? j.events : [];
+    const okDate = (v) => typeof v === 'string' && (/^\d{4}-\d{2}-\d{2}$/.test(v) || (isTimed(v) && !isNaN(new Date(v))));
+    return evs.filter((e) => e && typeof e === 'object' && typeof e.title === 'string' && e.title.trim() && okDate(e.start)).map((e) => ({
+      id: typeof e.id === 'string' ? e.id : '', title: e.title.trim(), start: e.start, end: okDate(e.end) ? e.end : e.start,
+      location: typeof e.location === 'string' ? e.location : '', description: typeof e.description === 'string' ? e.description.slice(0, 400) : '',
+      deadline: /^\d{4}-\d{2}-\d{2}$/.test(e.deadline || '') ? e.deadline : '', url: safeUrl(e.url) }));
+  }
+  async function loadEvents() {
+    try {
+      const res = await fetch(feedUrl(EVENTS_URL), { cache: 'no-store' });
+      if (res.ok) calEvents = parseEventsFile(await res.json());
+    } catch (err) { calEvents = []; /* fall back to js/site-data.js */ }
+    renderCalendarBits(); renderTournaments();
   }
 
   /* ---------------- Tournaments hub ---------------- */
@@ -138,7 +296,14 @@
     const titles = { all: 'Association Tournaments', upcoming: 'Upcoming Events', adult: 'Adult Championships', youth: 'Youth Events' };
     document.getElementById('tournament-section-title').textContent = titles[currentTournamentFilter] || titles.all;
 
-    const evs = D.tournaments.filter((ev) => {
+    // Calendar-only events (from events.json, no matching site-data card) show here, never on the home page.
+    const calOnly = upcomingEvents().filter((u) => u.fromCalendar && !isOver(u) && !D.tournaments.some((t) => t.id === u.id)).map((u) => {
+      const a = parseDay(u.sessions[0].start), b = parseDay(u.sessions[u.sessions.length - 1].end);
+      return { id: u.id, title: u.title, category: /youth/i.test(u.title) ? 'youth' : 'adult', status: 'upcoming', statusLabel: 'Upcoming · ' + a.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+        dates: fmtDate(a) + (b && +b !== +a ? ' – ' + fmtDate(b) : ''), center: u.location || 'Location TBA', summary: u.description || 'From the CHUSBC calendar.',
+        pageUrl: u.url || D.calendarUrl || '' };
+    });
+    const evs = D.tournaments.concat(calOnly).filter((ev) => {
       const hit = !q || [ev.title, ev.center, ev.dates].join(' ').toLowerCase().includes(q);
       if (!hit) return false;
       if (currentTournamentFilter === 'upcoming') return ev.status === 'upcoming';
@@ -150,8 +315,10 @@
     else {
       wrap.classList.remove('hidden'); wrap.hidden = false;
       document.getElementById('tournament-count-badge').textContent = evs.length + ' Event' + (evs.length === 1 ? '' : 's');
+      const upEvents = upcomingEvents();
       grid.innerHTML = evs.length ? evs.map((ev) => {
         const youth = ev.category === 'youth';
+        const up = ev.status === 'upcoming' ? upEvents.find((u) => u.id === ev.id) : null;
         const badge = ev.status === 'upcoming' ? 'bg-gold text-navy' : (youth ? 'bg-gold-light text-gold-dark' : 'bg-navy/10 text-navy');
         const primary = ev.entryUrl
           ? `<a href="${esc(ev.entryUrl)}" target="_blank" rel="noopener" class="flex-1 bg-navy hover:bg-navy-light text-white font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5"><i class="fa-solid fa-file-pdf text-gold"></i> Entry Form &amp; Rules</a>`
@@ -171,7 +338,9 @@
               <div class="flex items-start gap-2"><i class="fa-solid fa-calendar text-gold-dark w-4 mt-0.5"></i><span class="font-semibold text-slate-800">${esc(ev.dates)}</span></div>
               <div class="flex items-start gap-2"><i class="fa-solid fa-location-dot text-gold-dark w-4 mt-0.5"></i><span>${esc(ev.center)}</span></div>
             </div>
+            ${up ? `<div class="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1">${deadlineBadge(up)}</div>` : ''}
             <p class="text-xs text-slate-500 mt-3 leading-relaxed">${esc(ev.summary)}</p>
+            ${up && calButtons(up, 'sm') ? `<div class="mt-3 flex flex-wrap items-center gap-1">${calButtons(up, 'sm')}</div>` : ''}
           </div>
           <div class="mt-5 pt-4 border-t border-slate-100 flex items-center gap-2">${primary}${secondary}</div>
         </div>`;
@@ -188,7 +357,7 @@
           <span class="px-2.5 py-1 rounded-lg bg-navy text-white font-display font-bold text-xs">${esc(r.year)}</span>
           <div>
             <div class="font-bold text-navy text-sm sm:text-base">${esc(r.title)}</div>
-            <div class="flex flex-wrap items-center gap-2 mt-0.5">${r.certified ? resultBadge(r) : ''}<span class="text-xs text-slate-500 font-mono break-all">${esc(r.meta || r.file || '')}</span></div>
+            <div class="flex flex-wrap items-center gap-2 mt-0.5">${r.certified ? resultBadge(r) + publishedLine(r) : ''}<span class="text-xs text-slate-500 font-mono break-all">${esc(r.meta || r.file || '')}</span></div>
           </div>
         </div>
         ${resultLinks(r, false)}
@@ -272,12 +441,14 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal('squad-modal'); });
 
   Object.assign(window, { switchView, toggleMobileMenu, setTournamentFilter, renderTournaments, setHonorsTab,
-    openSquadModal, closeModal, handleSquadSubmit, handleContactSubmit, updateContactRoute, triggerToast, openFeedback });
+    openSquadModal, closeModal, handleSquadSubmit, handleContactSubmit, updateContactRoute, triggerToast, openFeedback, downloadIcs });
 
   document.addEventListener('DOMContentLoaded', () => {
     fillYearFilter(); renderHomeLatestResults(); renderTournaments(); renderHonors();
     routeFromHash(true);
     window.addEventListener('hashchange', () => routeFromHash(false));
+    renderCalendarBits();
     loadPrismResults();
+    loadEvents();
   });
 })();

@@ -13,7 +13,9 @@ Base: Gemini's single-page layout (sticky header + mobile drawer, live ribbon, W
 | `js/site-data.js` | Tournaments, results archive, Hall of Fame and Jerry Farro scholarship data (sourced from chusbc.org) |
 | `js/app.js` | View switching, filters, results merge, email (mailto) forms |
 | `js/ask-chusbc.js`, `css/ask-chusbc.css` | "John" chat widget |
-| `results-index.json` | Prism → website certified-results contract (see below) |
+| `results-index.json` | Prism → website certified results (contract: `docs/PRISM-RESULTS-CONTRACT.md`) |
+| `events.json` | Upcoming events refreshed from the CHUSBC Google Calendar (shape: `scripts/refresh-events.md`); empty = use `js/site-data.js` |
+| `sw.js` | PWA service worker: network-first for pages and both JSON feeds, cache-first for static assets |
 | `assets/` | Center photos, USBC/bowl.com art, Legacy Computing Services logo |
 
 Preview locally: `python3 -m http.server 8080` in this folder, then open http://localhost:8080/ (the results index is loaded with `fetch`, so open it over http, not `file://`).
@@ -27,12 +29,14 @@ Preview locally: `python3 -m http.server 8080` in this folder, then open http://
 ## Production checklist (after committee approval)
 
 1. **Compile Tailwind**: replace the Play CDN (`cdn.tailwindcss.com`) with a compiled, purged CSS build (Tailwind CLI) and move the inline `tailwind.config` into `tailwind.config.js`. The CDN is for previews only.
-2. **Firebase Hosting**: deploy this folder as static hosting. Serve `results-index.json` with `Cache-Control: no-cache`.
+2. **Firebase Hosting**: deploy this folder as static hosting. Serve `results-index.json` and `events.json` with `Cache-Control: no-cache`.
 3. **No keys in the browser**: add a server-side proxy (Firebase Function) for John → Grok/xAI. Keep secrets in Functions config or Secret Manager.
 4. **Committee approval before cutover**: approve the design, then do the DNS/hosting cutover from WordPress. Keep the WordPress `wp-content/uploads` PDF links working, or mirror them, because the archive links point there.
 5. Fill in the "coming soon" items: board names, bylaws, association records, HOF nomination form, scholarship application, history timeline.
 
 ## Prism → website results contract
+
+The current, authoritative version is **[docs/PRISM-RESULTS-CONTRACT.md](docs/PRISM-RESULTS-CONTRACT.md)** (Prism publishes by committing `results-index.json` to `main`). The notes below are the original phase-1 plan.
 
 When a tournament is **certified completed** in Prism, Prism publishes the certified PDF and updates `results-index.json`. Phase 1 uses the Drive folder `CHUSBC Results/YYYY/` plus the index (Drive file id `115HUsQeeQtBcU8YaY3SJ2XUCZbKZcB6Y`). On hosting, the same JSON is deployed at `/results-index.json`. The site fetches `./results-index.json` on load and lists those events **at the top** of Latest Results and the Results Archive, badged **"Certified · Published by Prism"**. Nobody retypes results.
 
@@ -54,7 +58,7 @@ When a tournament is **certified completed** in Prism, Prism publishes the certi
 ```
 
 - `pdf_url` wins if present (must be `https://`). Otherwise the link is `https://drive.google.com/file/d/<pdf_file_id>/view`, so the Drive file must be shared "anyone with the link".
-- Sorted by `published_at` (newest first). If a URL matches a static archive entry, the static entry is dropped.
+- Sorted by `published_at` (newest first), gold NEW badge for 14 days. A static archive entry with the same URL, Drive file, or event name + year is dropped.
 - Missing or empty index means the site shows the static archive only.
 - Future (phase 2): a Firebase Function endpoint Prism can POST to, which writes this same JSON. The schema stays stable for the desk.
 

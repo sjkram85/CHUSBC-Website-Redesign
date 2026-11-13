@@ -1,5 +1,7 @@
 /* CHUSBC site data (preview). Sources: chusbc.org pages and wp-content/uploads PDFs, checked Nov 13, 2026.
-   Prism-certified results are NOT here; they load at runtime from ./results-index.json. */
+   Prism-certified results are NOT here; they load at runtime from ./results-index.json.
+   Upcoming events: "sessions" (all-day, inclusive YYYY-MM-DD) and "deadline" (YYYY-MM-DD, "" = not stated) feed the
+   deadline line and Add-to-calendar buttons. ./events.json (refreshed from the CHUSBC Google Calendar) overrides these when it has a match. */
 window.CHUSBC_DATA = {
  "calendarUrl": "https://chusbc.org/wp-content/uploads/2025/05/2025-2026-chusbc-calendar-of-events.pdf",
  "tournaments": [
@@ -16,6 +18,10 @@ window.CHUSBC_DATA = {
    "resultsUrl": "https://chusbc.org/wp-content/uploads/2025/11/2025-open-unofficial-standings-revised.pdf",
    "resultsLabel": "2025 Results",
    "summary": "Team, Singles & Doubles, plus optional All-Events. $35 per event; handicap 90% of 230 (no maximum); all prize fees returned 100%. Entry deadline on the form: Nov 9, 2026."
+,
+   "location": "Forest Hill Lanes, 1 Maurice Drive, Forest Hill, MD 21050",
+   "sessions": [{ "start": "2026-11-14", "end": "2026-11-15" }, { "start": "2026-11-21", "end": "2026-11-22" }],
+   "deadline": "2026-11-09"
   },
   {
    "id": "womens-champ",
@@ -30,6 +36,10 @@ window.CHUSBC_DATA = {
    "resultsUrl": "https://chusbc.org/wp-content/uploads/2025/11/womens-final-standings.pdf",
    "resultsLabel": "2025 Results",
    "summary": "Originally set for Oct 24–25, 2026; now March 13–14, 2027 at APG Brewner Lanes. The posted entry form still shows the original October dates."
+,
+   "location": "Brewner Lanes, Bldg 2342, Aberdeen Proving Ground, MD 21005",
+   "sessions": [{ "start": "2027-03-13", "end": "2027-03-14" }],
+   "deadline": ""
   },
   {
    "id": "lighthouse-ladies",
