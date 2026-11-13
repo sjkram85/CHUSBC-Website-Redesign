@@ -1,0 +1,47 @@
+{
+  "name": "Cecil Harford USBC Association",
+  "short_name": "CHUSBC",
+  "description": "Cecil Harford USBC Association — tournaments, results, youth bowling, Hall of Fame and association centers for Cecil & Harford Counties, Maryland.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "lang": "en",
+  "dir": "ltr",
+  "theme_color": "#0F1E36",
+  "background_color": "#0F1E36",
+  "categories": ["sports"],
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tournaments",
+      "short_name": "Events",
+      "description": "Upcoming tournaments and youth events",
+      "url": "./#tournaments"
+    },
+    {
+      "name": "Results",
+      "short_name": "Results",
+      "description": "Certified and posted tournament results",
+      "url": "./#tournaments/results"
+    }
+  ]
+}
