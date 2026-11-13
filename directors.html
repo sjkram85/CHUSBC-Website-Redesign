@@ -90,6 +90,32 @@
                 </a>
             </div>
 
+            <!-- Board Meetings Calendar (directors only). Configure BOARD_CALENDAR_ID in the script at the bottom of this page. -->
+            <section id="board-cal" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" aria-labelledby="bc-title">
+                <div class="bg-navy text-white px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-4 border-gold">
+                    <h2 id="bc-title" class="font-display text-lg sm:text-xl font-bold uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-calendar-check text-gold"></i> Board Meetings Calendar</h2>
+                    <div id="bc-controls" class="hidden flex items-center gap-2 text-xs font-bold">
+                        <div class="inline-flex rounded-lg bg-white/10 p-0.5" role="group" aria-label="Calendar view">
+                            <button type="button" data-bc-mode="AGENDA" class="bc-mode px-3 py-1.5 rounded-md">Agenda</button>
+                            <button type="button" data-bc-mode="MONTH" class="bc-mode px-3 py-1.5 rounded-md">Month</button>
+                        </div>
+                        <a id="bc-open" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 bg-gold hover:bg-gold-hover text-navy px-3 py-1.5 rounded-lg">Open in Google Calendar <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>
+                    </div>
+                </div>
+                <div id="bc-empty" class="px-5 sm:px-6 py-6 flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gold-light text-gold-dark flex items-center justify-center shrink-0"><i class="fa-solid fa-clock"></i></div>
+                    <p class="text-sm text-slate-600"><strong class="text-navy">Board meetings calendar coming soon.</strong> Meetings will appear here for directors signed in with a shared Google account.</p>
+                </div>
+                <div id="bc-live" class="hidden">
+                    <div class="p-3 sm:p-4 bg-slatebg">
+                        <div class="rounded-xl border-2 border-gold/70 overflow-hidden bg-white">
+                            <iframe id="bc-frame" title="CHUSBC board meetings calendar" class="w-full block h-[420px] sm:h-[520px]" frameborder="0" scrolling="no" loading="lazy"></iframe>
+                        </div>
+                    </div>
+                    <p class="px-5 sm:px-6 py-3 text-xs text-slate-500 border-t border-slate-100"><i class="fa-solid fa-lock text-gold-dark mr-1"></i> Visible only to directors signed in with a Google account the calendar is shared with.</p>
+                </div>
+            </section>
+
             <!-- John's Upload Helper (demo): runs entirely in the browser. No upload, no Drive API, no keys. -->
             <section id="upload-helper" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" aria-labelledby="uh-title">
                 <div class="bg-navy text-white px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-4 border-gold">
@@ -146,6 +172,37 @@
             </div>
         </div>
     </footer>
+    <script>
+    /* ================= BOARD MEETINGS CALENDAR — CONFIG =================
+       Paste the Google Calendar ID between the quotes (Google Calendar >
+       Settings > the calendar > "Integrate calendar" > Calendar ID, e.g.
+       xxxxxxxx@group.calendar.google.com). Leave '' to show "coming soon".
+       Keep the calendar PRIVATE; share it only with directors' Google accounts.
+       The ID alone grants no access, so it is OK in this public repo. */
+    var BOARD_CALENDAR_ID = '';
+    /* ==================================================================== */
+    (function () {
+      var id = String(BOARD_CALENDAR_ID || '').trim();
+      if (!/^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+$/.test(id)) return;   // empty or not a calendar ID: keep the placeholder
+      var base = 'https://calendar.google.com/calendar/embed?src=' + encodeURIComponent(id) + '&ctz=America%2FNew_York' +
+        '&showTitle=0&showPrint=0&showTz=0&wkst=1&color=%230F1E36';
+      var frame = document.getElementById('bc-frame');
+      function setMode(m) {
+        frame.src = base + '&mode=' + m;
+        document.querySelectorAll('.bc-mode').forEach(function (b) {
+          var on = b.getAttribute('data-bc-mode') === m;
+          b.className = 'bc-mode px-3 py-1.5 rounded-md ' + (on ? 'bg-gold text-navy' : 'text-slate-200 hover:bg-white/10');
+          b.setAttribute('aria-pressed', String(on));
+        });
+      }
+      document.querySelectorAll('.bc-mode').forEach(function (b) { b.addEventListener('click', function () { setMode(b.getAttribute('data-bc-mode')); }); });
+      document.getElementById('bc-open').href = 'https://calendar.google.com/calendar/r?cid=' + encodeURIComponent(id);
+      document.getElementById('bc-empty').classList.add('hidden');
+      document.getElementById('bc-live').classList.remove('hidden');
+      document.getElementById('bc-controls').classList.remove('hidden');
+      setMode('AGENDA');
+    })();
+    </script>
     <script src="js/site-data.js"></script>
     <script>
     /* John's Upload Helper (demo). Local only: no network calls, no Drive API, no keys. */
