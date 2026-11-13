@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cecil Harford USBC Association | Official Website (chusbc.org)</title>
+    <meta name="description" content="Cecil Harford USBC Association — tournaments, results, youth bowling, Hall of Fame and association centers for Cecil &amp; Harford Counties, Maryland.">
+    <link rel="icon" href="assets/logo.jpg">
+    <!-- PREVIEW BUILD: Tailwind Play CDN is for committee preview only. Production should use a compiled Tailwind build (see README.md). -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Oswald (Display/Sports) & Plus Jakarta Sans (Body/UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Sports & UI Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: '#0F1E36',
+                            light: '#1A3154',
+                            dark: '#091221'
+                        },
+                        alert: { DEFAULT: '#B91C1C', light: '#FEF2F2' },
+                        slatebg: '#F4F6F9',
+                        gold: {
+                            DEFAULT: '#F2C230', // bowling gold (fills, accents on navy)
+                            hover: '#E0AE14',
+                            dark: '#8A6500',    // text/icons on white: 5.3:1 contrast
+                            light: '#FDF6DC'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Oswald', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom subtle patterns and transitions */
+        .hero-pattern {
+            background-color: #0F1E36;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+                              linear-gradient(135deg, #091221 0%, #0F1E36 55%, #1A3154 100%);
+            background-size: 24px 24px, 100% 100%;
+        }
+        .lane-stripes {
+            background: repeating-linear-gradient(
+                90deg,
+                rgba(255,255,255,0.03),
+                rgba(255,255,255,0.03) 20px,
+                transparent 20px,
+                transparent 40px
+            );
+        }
+        .view-section {
+            animation: fadeIn 0.28s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Hide scrollbars on horizontal pill containers while allowing scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+            .card-photo { aspect-ratio: 16 / 9; object-fit: cover; width: 100%; display: block; }
+        a.pdf-link[aria-disabled="true"], button[disabled] { cursor: not-allowed; }
+        .bowlcom-text { filter: none; }
+    </style>
+    <link rel="stylesheet" href="css/ask-chusbc.css">
+</head>
+<body class="bg-slatebg text-slate-800 font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- Top Utility / Alert Ribbon -->
+    <div class="bg-navy-dark text-white text-xs sm:text-sm py-2 px-4 border-b border-white/10">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div class="flex items-center gap-2 text-center sm:text-left">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-gold text-navy whitespace-nowrap shrink-0">
+                    Live Update
+                </span>
+                <span class="text-slate-200">
+                    <strong>69th Annual Open Championship</strong> kicks off this weekend — Nov 14–15 &amp; 21–22 at Forest Hill Lanes.
+                </span>
+            </div>
+            <div class="flex items-center gap-4 text-slate-300 text-xs shrink-0">
+                <a href="https://www.facebook.com/chusbca/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition flex items-center gap-1.5">
+                    <i class="fa-brands fa-facebook text-blue-400"></i> Official Facebook
+                </a>
+                <span class="text-white/20">|</span>
+                <button onclick="switchView('tournaments', 'upcoming')" class="text-amber-400 hover:text-amber-300 font-semibold transition">
+                    Women's Champ Rescheduled &rarr;
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Main Header & Navigation -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Identity -->
+                <button onclick="switchView('home')" class="flex items-center gap-3.5 text-left group focus:outline-none">
+                    <!-- Custom USBC-Inspired Bowling Crest SVG -->
+                    <div class="w-12 h-12 rounded-xl bg-navy flex items-center justify-center shadow-md group-hover:bg-navy-light transition relative overflow-hidden shrink-0">
+                        <div class="absolute bottom-0 inset-x-0 h-1.5 bg-gold"></div>
+                        <svg class="w-7 h-7 text-white" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Bowling Pin Silhouette -->
+                            <path d="M18 4C16.1 4 14.8 5.4 14.8 7.3C14.8 8.6 15.4 9.7 16.1 10.6C14.4 12.6 13 15.6 13 19.8C13 24.5 14.4 28.4 15.2 31H20.8C21.6 28.4 23 24.5 23 19.8C23 15.6 21.6 12.6 19.9 10.6C20.6 9.7 21.2 8.6 21.2 7.3C21.2 5.4 19.9 4 18 4Z" fill="white"/>
+                            <!-- Neck Stripes -->
+                            <rect x="15.3" y="11.5" width="5.4" height="1.3" rx="0.5" fill="#F2C230"/>
+                            <rect x="14.7" y="13.6" width="6.6" height="1.3" rx="0.5" fill="#F2C230"/>
+                            <!-- Star Accent -->
+                            <path d="M18 17.5L18.9 19.4L21 19.7L19.5 21.1L19.8 23.2L18 22.2L16.2 23.2L16.5 21.1L15 19.7L17.1 19.4L18 17.5Z" fill="#0F1E36"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-display font-bold text-xl sm:text-2xl tracking-tight text-navy uppercase leading-none whitespace-nowrap">
+                                Cecil Harford <span class="text-gold-dark">USBC</span>
+                            </span>
+                        </div>
+                        <p class="hidden sm:block whitespace-nowrap text-[11px] sm:text-xs font-medium text-slate-500 tracking-wide uppercase mt-1">
+                            United States Bowling Congress &bull; Maryland
+                        </p>
+                    </div>
+                </button>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center gap-1" aria-label="Primary Navigation">
+                    <button data-nav="home" onclick="switchView('home')" class="nav-btn whitespace-nowrap px-3 py-2 rounded-lg text-sm font-bold text-navy bg-slate-100 transition">
+                        Home
+                    </button>
+                    <button data-nav="tournaments" onclick="switchView('tournaments', 'all')" class="nav-btn whitespace-nowrap px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-navy hover:bg-slate-50 transition">
+                        Tournaments &amp; Youth
+                    </button>
+                    <button data-nav="honors" onclick="switchView('honors', 'hof')" class="nav-btn whitespace-nowrap px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-navy hover:bg-slate-50 transition">
+                        Honors &amp; Records
+                    </button>
+                    <button data-nav="about" onclick="switchView('about')" class="nav-btn whitespace-nowrap px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-navy hover:bg-slate-50 transition">
+                        About &amp; Board
+                    </button>
+                    <button data-nav="contact" onclick="switchView('contact')" class="nav-btn whitespace-nowrap px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-navy hover:bg-slate-50 transition">
+                        Contact
+                    </button>
+                </nav>
+
+                <!-- Desktop Right CTA -->
+                <div class="hidden lg:flex items-center gap-2">
+                    <a href="directors.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-600 hover:text-navy px-3 py-2 rounded-lg hover:bg-slate-50 transition">
+                        <i class="fa-solid fa-lock text-xs"></i><span class="whitespace-nowrap">Directors</span>
+                    </a>
+                    <button onclick="openSquadModal('69th Annual CHUSBC Open Championship')" class="inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-navy text-sm font-bold px-4 py-2.5 rounded-xl shadow-sm transition transform active:scale-95">
+                        <i class="fa-solid fa-bowling-ball"></i>
+                        <span class="whitespace-nowrap">Squad Inquiry</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl text-navy hover:bg-slate-100 focus:outline-none" aria-label="Open Navigation Menu">
+                    <i id="mobile-menu-icon" class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-drawer" class="hidden lg:hidden bg-white border-t border-slate-200 shadow-xl">
+            <div class="px-4 pt-3 pb-6 space-y-1.5">
+                <button data-mobile-nav="home" onclick="switchView('home'); toggleMobileMenu()" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-bold text-navy bg-slate-100">
+                    <span><i class="fa-solid fa-house w-6 text-gold-dark"></i> Home</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+                <button data-mobile-nav="tournaments" onclick="switchView('tournaments', 'all'); toggleMobileMenu()" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50">
+                    <span><i class="fa-solid fa-trophy w-6 text-gold-dark"></i> Tournaments &amp; Youth</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+                <button data-mobile-nav="honors" onclick="switchView('honors', 'hof'); toggleMobileMenu()" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50">
+                    <span><i class="fa-solid fa-medal w-6 text-gold-dark"></i> Honors &amp; Records</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+                <button data-mobile-nav="about" onclick="switchView('about'); toggleMobileMenu()" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50">
+                    <span><i class="fa-solid fa-users-gear w-6 text-navy"></i> About &amp; Board</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+                <button data-mobile-nav="contact" onclick="switchView('contact'); toggleMobileMenu()" class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-semibold text-slate-700 hover:bg-slate-50">
+                    <span><i class="fa-solid fa-envelope w-6 text-navy"></i> Contact</span>
+                    <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+                <div class="pt-3 border-t border-slate-100">
+                    <button onclick="toggleMobileMenu(); openSquadModal('69th Annual CHUSBC Open Championship')" class="w-full flex items-center justify-center gap-2 bg-gold text-navy font-bold py-3.5 rounded-xl shadow">
+                        <i class="fa-solid fa-bowling-ball"></i>
+                        <span>Open Championship Squad Inquiry</span>
+                    </button>
+                    <a href="directors.html" class="mt-2 w-full flex items-center justify-center gap-2 text-navy font-semibold py-3 rounded-xl border border-slate-200 hover:bg-slate-50">
+                        <i class="fa-solid fa-lock text-xs"></i> Director Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow">
+
+        <!-- =====================================================================
+             VIEW 1: HOME
+        ====================================================================== -->
+        <section id="view-home" class="view-section">
+            
+            <!-- Hero Banner -->
+            <div class="hero-pattern text-white relative overflow-hidden">
+                <div class="lane-stripes absolute inset-0 pointer-events-none"></div>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 relative z-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+                        
+                        <!-- Left Brand Messaging -->
+                        <div class="lg:col-span-7 space-y-6">
+                            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-bold uppercase tracking-wider text-amber-300">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span>Official Local USBC Association</span>
+                            </div>
+                            
+                            <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold uppercase tracking-tight leading-[1.08]">
+                                Promoting the Game of <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-gold">American Tenpins</span>
+                            </h1>
+                            
+                            <p class="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed">
+                                Serving certified adult and youth bowlers across <strong class="text-white">Cecil &amp; Harford Counties</strong>. Access tournament entry forms, official standings, association records, and youth scholarship programs.
+                            </p>
+
+                            <!-- Women's Championship Reschedule Notice Badge -->
+                            <div class="bg-amber-500/15 border border-amber-400/40 rounded-2xl p-4 flex items-start gap-3.5 max-w-2xl">
+                                <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-calendar-xmark text-lg"></i>
+                                </div>
+                                <div class="text-sm">
+                                    <div class="font-bold text-amber-300 uppercase tracking-wide text-xs">Schedule Notice &bull; Women's Championship</div>
+                                    <p class="text-slate-100 mt-0.5">
+                                        The <strong>63rd Annual CHUSBC Women's Championship</strong> at APG Brewner Lanes has been rescheduled to <strong>March 13–14, 2027</strong> (originally Oct 24–25, 2026). <a href="https://chusbc.org/wp-content/uploads/2026/08/2026-womens-championship.pdf" target="_blank" rel="noopener" class="underline font-semibold text-amber-200 hover:text-white">Entry form &amp; rules (PDF)</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-3 pt-1">
+                                <button onclick="switchView('tournaments', 'all')" class="bg-white text-navy hover:bg-slate-100 font-bold px-6 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2 text-sm sm:text-base">
+                                    <span>Explore 2026–27 Schedule</span>
+                                    <i class="fa-solid fa-arrow-right text-gold-dark"></i>
+                                </button>
+                                <button onclick="switchView('honors', 'records')" class="bg-white/10 hover:bg-white/15 border border-white/20 text-white font-semibold px-6 py-3.5 rounded-xl transition text-sm sm:text-base">
+                                    Association Records
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Featured Tournament Spotlight Card -->
+                        <div class="lg:col-span-5">
+                            <div class="bg-white text-slate-800 rounded-2xl shadow-2xl border border-slate-200/80 overflow-hidden">
+                                <div class="bg-gold px-6 py-3.5 flex items-center justify-between text-navy">
+                                    <span class="text-xs font-extrabold uppercase tracking-widest flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-white animate-ping"></span>
+                                        Featured Championship
+                                    </span>
+                                    <span class="text-xs font-bold bg-navy/10 px-2.5 py-0.5 rounded-full whitespace-nowrap">2026–27 Season</span>
+                                </div>
+                                
+                                <div class="p-6 sm:p-7 space-y-5">
+                                    <div>
+                                        <span class="text-xs font-bold uppercase tracking-wider text-gold-dark">Adult Flagship Event</span>
+                                        <h2 class="font-display text-2xl sm:text-3xl font-bold text-navy uppercase mt-1 leading-tight">
+                                            69th Annual CHUSBC Open Championship
+                                        </h2>
+                                    </div>
+
+                                    <div class="space-y-3 bg-slatebg p-4 rounded-xl border border-slate-200/70 text-sm">
+                                        <div class="flex items-start gap-3">
+                                            <i class="fa-solid fa-calendar-days text-gold-dark w-4 mt-1"></i>
+                                            <div>
+                                                <div class="font-bold text-navy">Nov 14–15 &amp; Nov 21–22, 2026</div>
+                                                <div class="text-slate-500 text-xs">Team, Singles &amp; Doubles &bull; Entry deadline was Nov 9, 2026</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start gap-3">
+                                            <i class="fa-solid fa-location-dot text-gold-dark w-4 mt-1"></i>
+                                            <div>
+                                                <div class="font-bold text-navy">Forest Hill Lanes</div>
+                                                <div class="text-slate-500 text-xs">1 Maurice Drive, Forest Hill, MD 21050</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start gap-3">
+                                            <i class="fa-solid fa-award text-gold-dark w-4 mt-1"></i>
+                                            <div>
+                                                <div class="font-bold text-navy">$35 per event &bull; Handicap 90% of 230</div>
+                                                <div class="text-slate-500 text-xs">Optional All-Events: $5 handicap / $10 scratch &bull; All prize fees returned 100%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                                        <a href="https://chusbc.org/wp-content/uploads/2026/08/2026-open-championship.pdf" target="_blank" rel="noopener" class="w-full inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white font-bold py-3 px-4 rounded-xl text-sm transition">
+                                            <i class="fa-solid fa-file-pdf text-gold"></i>
+                                            <span>Entry Form &amp; Rules</span>
+                                        </a>
+                                        <button onclick="openSquadModal('69th Annual CHUSBC Open Championship')" class="w-full inline-flex items-center justify-center gap-2 bg-gold hover:bg-gold-hover text-navy font-bold py-3 px-4 rounded-xl text-sm transition shadow-sm">
+                                            <i class="fa-solid fa-paper-plane"></i>
+                                            <span>Squad Inquiry (Email)</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick-Access Action Bar (4 Cards) -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-20">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <button onclick="switchView('tournaments', 'upcoming')" class="bg-white hover:bg-slate-50 p-5 rounded-2xl shadow-md border border-slate-200/80 flex items-center gap-4 text-left transition group">
+                        <div class="w-12 h-12 rounded-xl bg-gold-light text-gold-dark flex items-center justify-center shrink-0 group-hover:scale-105 transition">
+                            <i class="fa-solid fa-calendar-check text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-navy text-base group-hover:text-gold-dark transition">Upcoming Events</div>
+                            <div class="text-xs text-slate-500 mt-0.5">2026–27 Entry Forms &amp; Dates</div>
+                        </div>
+                    </button>
+
+                    <button onclick="switchView('tournaments', 'results')" class="bg-white hover:bg-slate-50 p-5 rounded-2xl shadow-md border border-slate-200/80 flex items-center gap-4 text-left transition group">
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-navy flex items-center justify-center shrink-0 group-hover:scale-105 transition">
+                            <i class="fa-solid fa-ranking-star text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-navy text-base group-hover:text-gold-dark transition">Latest Results</div>
+                            <div class="text-xs text-slate-500 mt-0.5">Official Standings (2023–2026)</div>
+                        </div>
+                    </button>
+
+                    <button onclick="switchView('tournaments', 'youth')" class="bg-white hover:bg-slate-50 p-5 rounded-2xl shadow-md border border-slate-200/80 flex items-center gap-4 text-left transition group">
+                        <div class="w-12 h-12 rounded-xl bg-gold-light text-gold-dark flex items-center justify-center shrink-0 group-hover:scale-105 transition">
+                            <i class="fa-solid fa-graduation-cap text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-navy text-base group-hover:text-gold-dark transition">Youth &amp; Scholarships</div>
+                            <div class="text-xs text-slate-500 mt-0.5">Pepsi, Stars &amp; Jerry Farro Fund</div>
+                        </div>
+                    </button>
+
+                    <a href="#association-centers" class="bg-white hover:bg-slate-50 p-5 rounded-2xl shadow-md border border-slate-200/80 flex items-center gap-4 text-left transition group">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition">
+                            <i class="fa-solid fa-map-location-dot text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-navy text-base group-hover:text-gold-dark transition">Bowling Centers</div>
+                            <div class="text-xs text-slate-500 mt-0.5">Cecil &amp; Harford Certified Houses</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Latest Tournament Results Preview -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+                    <div>
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-gold-dark">Official Standings</span>
+                        <h2 class="font-display text-3xl font-bold text-navy uppercase mt-1">Latest Tournament Results</h2>
+                    </div>
+                    <button onclick="switchView('tournaments', 'results')" class="inline-flex items-center gap-2 text-sm font-bold text-navy hover:text-gold-dark bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-sm transition self-start sm:self-auto">
+                        <span>View Full Results Archive</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden divide-y divide-slate-100" id="home-latest-results">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- bowl.com graphical link card -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
+                <div class="bg-white rounded-2xl border border-slate-200 border-l-4 border-l-gold shadow-sm p-6 grid grid-cols-1 lg:grid-cols-[auto_1fr_auto] items-center gap-6">
+                    <a href="https://bowl.com" target="_blank" rel="noopener" class="flex items-center gap-4 group" aria-label="bowl.com — United States Bowling Congress">
+                        <img src="assets/bowl-usbc-logo.svg" width="72" height="68" alt="USBC logo" class="w-[72px] h-auto shrink-0">
+                        <span class="flex flex-col gap-1.5">
+                            <span class="font-display text-2xl font-bold text-navy tracking-wide leading-none group-hover:text-gold-dark transition">bowl.com</span>
+                            <img src="assets/bowl-usbc-logo-text.svg" width="220" height="13" alt="United States Bowling Congress" class="w-[220px] max-w-[52vw] h-auto">
+                        </span>
+                    </a>
+                    <div>
+                        <h2 class="font-display text-xl font-bold text-navy uppercase">Averages, bowler lookup &amp; more</h2>
+                        <p class="text-sm text-slate-600 mt-1">Find members, check averages and league standing sheets on the official USBC site.</p>
+                    </div>
+                    <div class="flex items-center gap-4 flex-wrap">
+                        <a href="https://webapps.bowl.com/USBCFindA/Home/Member" target="_blank" rel="noopener" class="flex flex-col items-center gap-1 w-20 text-center text-[11px] font-bold text-navy hover:underline"><img src="assets/bowl-find-member.png" alt="" class="w-14 h-12 object-contain">Find a Member</a>
+                        <a href="https://lss.bowl.com/leagueStandingSheets/ViewServlet" target="_blank" rel="noopener" class="flex flex-col items-center gap-1 w-20 text-center text-[11px] font-bold text-navy hover:underline"><img src="assets/bowl-standing.png" alt="" class="w-14 h-12 object-contain">Standing Sheets</a>
+                        <a href="https://bowl.com" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-navy hover:bg-navy-light text-white font-bold text-sm px-5 py-3 rounded-xl transition whitespace-nowrap">Visit bowl.com <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gold"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Association Centers Grid -->
+            <div id="association-centers" class="bg-white border-t border-slate-200 py-14">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-2xl mb-10">
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-gold-dark">Certified Houses</span>
+                        <h2 class="font-display text-3xl font-bold text-navy uppercase mt-1">Association Bowling Centers</h2>
+                        <p class="text-slate-600 text-sm sm:text-base mt-2">
+                            League and tournament host centers serving Cecil and Harford County bowlers.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Forest Hill Lanes -->
+                        <div class="bg-slatebg rounded-2xl p-6 border border-slate-200 flex flex-col justify-between hover:shadow-md transition overflow-hidden">
+                            <div>
+                                <img src="assets/forest-hill-lanes.jpg" alt="Forest Hill Lanes" loading="lazy" class="card-photo -mx-6 -mt-6 mb-5 max-w-none" style="width:calc(100% + 3rem)">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-navy text-white">Harford County</span>
+                                    <span class="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">USBC Certified</span>
+                                </div>
+                                <h3 class="font-display text-2xl font-bold text-navy uppercase">Forest Hill Lanes</h3>
+                                <p class="text-slate-600 text-sm mt-2 flex items-start gap-2">
+                                    <i class="fa-solid fa-location-dot text-gold-dark mt-1"></i>
+                                    <span>1 Maurice Drive<br>Forest Hill, MD 21050</span>
+                                </p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-200/80 space-y-2.5">
+                                <a href="tel:4108384477" class="w-full flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-navy font-bold py-2.5 px-4 rounded-xl border border-slate-200 text-sm transition">
+                                    <i class="fa-solid fa-phone text-gold-dark"></i>
+                                    <span>410-838-4477</span>
+                                </a>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a href="https://maps.google.com/?q=1+Maurice+Drive+Forest+Hill+MD+21050" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 bg-navy hover:bg-navy-light text-white font-semibold py-2 px-3 rounded-xl text-xs transition">
+                                        <i class="fa-solid fa-diamond-turn-right"></i> Directions
+                                    </a>
+                                    <a href="https://foresthillbowl.com/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 bg-white hover:bg-slate-100 text-slate-700 font-semibold py-2 px-3 rounded-xl border border-slate-200 text-xs transition">
+                                        <i class="fa-solid fa-globe"></i> Website
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Harford Lanes -->
+                        <div class="bg-slatebg rounded-2xl p-6 border border-slate-200 flex flex-col justify-between hover:shadow-md transition overflow-hidden">
+                            <div>
+                                <div class="card-photo -mx-6 -mt-6 mb-5 max-w-none hero-pattern relative flex flex-col items-center justify-center text-center" style="width:calc(100% + 3rem)" role="img" aria-label="Harford Lanes photo coming soon"><div class="lane-stripes absolute inset-0"></div><i class="fa-solid fa-bowling-ball text-gold text-4xl relative"></i><span class="relative mt-2 font-display uppercase tracking-wider text-white text-lg">Harford Lanes</span><span class="relative text-xs text-slate-300">Photo coming soon</span></div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-navy text-white">Harford County</span>
+                                    <span class="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">USBC Certified</span>
+                                </div>
+                                <h3 class="font-display text-2xl font-bold text-navy uppercase">Harford Lanes</h3>
+                                <p class="text-slate-600 text-sm mt-2 flex items-start gap-2">
+                                    <i class="fa-solid fa-location-dot text-gold-dark mt-1"></i>
+                                    <span>20 Custis Street<br>Aberdeen, MD 21001</span>
+                                </p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-200/80 space-y-2.5">
+                                <a href="tel:4102723555" class="w-full flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-navy font-bold py-2.5 px-4 rounded-xl border border-slate-200 text-sm transition">
+                                    <i class="fa-solid fa-phone text-gold-dark"></i>
+                                    <span>410-272-3555</span>
+                                </a>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a href="https://maps.google.com/?q=20+Custis+St+Aberdeen+MD+21001" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 bg-navy hover:bg-navy-light text-white font-semibold py-2 px-3 rounded-xl text-xs transition">
+                                        <i class="fa-solid fa-diamond-turn-right"></i> Directions
+                                    </a>
+                                    <a href="https://harfordlanes.com/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 bg-white hover:bg-slate-100 text-slate-700 font-semibold py-2 px-3 rounded-xl border border-slate-200 text-xs transition">
+                                        <i class="fa-solid fa-globe"></i> Website
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Brewner Lanes - APG -->
+                        <div class="bg-slatebg rounded-2xl p-6 border border-slate-200 flex flex-col justify-between hover:shadow-md transition overflow-hidden">
+                            <div>
+                                <img src="assets/apg-brewner-lanes.jpg" alt="APG Brewner Lanes" loading="lazy" class="card-photo -mx-6 -mt-6 mb-5 max-w-none" style="width:calc(100% + 3rem)">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full text-xs font-bold bg-navy text-white">Aberdeen Proving Ground</span>
+                                    <span class="text-xs font-semibold text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-full">Base Access Info</span>
+                                </div>
+                                <h3 class="font-display text-2xl font-bold text-navy uppercase">Brewner Lanes – APG</h3>
+                                <p class="text-slate-600 text-sm mt-2 flex items-start gap-2">
+                                    <i class="fa-solid fa-location-dot text-gold-dark mt-1"></i>
+                                    <span>Bldg 2342, Aberdeen Proving Ground<br>Aberdeen, MD 21005</span>
+                                </p>
+                            </div>
+                            <div class="mt-6 pt-4 border-t border-slate-200/80 space-y-2.5">
+                                <a href="tel:4102784041" class="w-full flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-navy font-bold py-2.5 px-4 rounded-xl border border-slate-200 text-sm transition">
+                                    <i class="fa-solid fa-phone text-gold-dark"></i>
+                                    <span>410-278-4041</span>
+                                </a>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <a href="https://maps.google.com/?q=Brewner+Lanes+Bldg+2342+Aberdeen+Proving+Ground+MD+21005" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 bg-navy hover:bg-navy-light text-white font-semibold py-2 px-3 rounded-xl text-xs transition">
+                                        <i class="fa-solid fa-diamond-turn-right"></i> Directions
+                                    </a>
+                                    <a href="https://aberdeen.armymwr.com/programs/bowling-center-brewner-lanes" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-1.5 bg-white hover:bg-slate-100 text-slate-700 font-semibold py-2 px-3 rounded-xl border border-slate-200 text-xs transition">
+                                        <i class="fa-solid fa-globe"></i> MWR Site
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 2: TOURNAMENTS & YOUTH HUB
+        ====================================================================== -->
+        <section id="view-tournaments" class="view-section hidden">
+            <!-- Sub-Header Banner -->
+            <div class="bg-navy text-white py-10 border-b border-white/10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div>
+                            <div class="text-xs font-extrabold uppercase tracking-widest text-amber-400">Competition &amp; Standings</div>
+                            <h1 class="font-display text-3xl sm:text-4xl font-bold uppercase mt-1">Tournaments &amp; Youth Hub</h1>
+                            <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl">
+                                Filter Cecil Harford USBC adult championships and youth events, open entry forms, and browse posted results from 2023 onward.
+                            </p>
+                        </div>
+                        <!-- Search Bar -->
+                        <div class="w-full md:w-80">
+                            <label for="tournament-search" class="sr-only">Search tournaments or results</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input id="tournament-search" type="text" oninput="renderTournaments()" placeholder="Search event, center, or year..." class="w-full pl-10 pr-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:bg-navy-light transition">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Tabs -->
+                    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-7 pb-1" role="tablist">
+                        <button onclick="setTournamentFilter('all')" data-tfilter="all" class="tfilter-btn px-4 py-2 rounded-xl text-sm font-bold bg-gold text-navy whitespace-nowrap transition">
+                            All Events
+                        </button>
+                        <button onclick="setTournamentFilter('upcoming')" data-tfilter="upcoming" class="tfilter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-slate-200 hover:bg-white/20 whitespace-nowrap transition">
+                            Upcoming
+                        </button>
+                        <button onclick="setTournamentFilter('adult')" data-tfilter="adult" class="tfilter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-slate-200 hover:bg-white/20 whitespace-nowrap transition">
+                            Adult Championships
+                        </button>
+                        <button onclick="setTournamentFilter('youth')" data-tfilter="youth" class="tfilter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-slate-200 hover:bg-white/20 whitespace-nowrap transition">
+                            Youth &amp; Scholarships
+                        </button>
+                        <button onclick="setTournamentFilter('results')" data-tfilter="results" class="tfilter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-slate-200 hover:bg-white/20 whitespace-nowrap transition">
+                            Results Archive
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Tournament Cards & Results Container -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+                
+                <!-- Events Grid -->
+                <div id="tournament-events-wrapper">
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 id="tournament-section-title" class="font-display text-2xl font-bold text-navy uppercase">Association Tournaments</h2>
+                        <span id="tournament-count-badge" class="text-xs font-bold bg-slate-200 text-slate-700 px-3 py-1 rounded-full">Events</span>
+                    </div>
+                    <div id="tournament-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+
+                <!-- Results Archive Table -->
+                <div id="tournament-archive-wrapper" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-6 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50/70">
+                        <div>
+                            <h2 class="font-display text-2xl font-bold text-navy uppercase">Official Results &amp; Standings Archive</h2>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Standings PDFs posted on chusbc.org (2023–2026). Results certified in Prism appear at the top automatically.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select id="archive-year-filter" onchange="renderTournaments()" class="bg-white border border-slate-300 text-slate-700 text-sm font-semibold rounded-xl px-3.5 py-2 focus:outline-none focus:ring-2 focus:ring-navy" aria-label="Filter by season"><option value="all">All Years</option></select>
+                        </div>
+                    </div>
+                    <div id="archive-list" class="divide-y divide-slate-100">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 3: HONORS & RECORDS
+        ====================================================================== -->
+        <section id="view-honors" class="view-section hidden">
+            <div class="bg-navy text-white py-10 border-b border-white/10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-amber-400">
+                        <i class="fa-solid fa-crown"></i> Legacy &amp; Excellence
+                    </div>
+                    <h1 class="font-display text-3xl sm:text-4xl font-bold uppercase mt-1">Honors, Scholarships &amp; Records</h1>
+                    <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl">
+                        Celebrating Cecil Harford USBC Hall of Fame inductees and Jerry Farro Youth Scholarship recipients, plus the yearbook and the Pin Dust historical archive.
+                    </p>
+
+                    <!-- Honors Sub-Navigation -->
+                    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pt-7 pb-1">
+                        <button onclick="setHonorsTab('hof')" data-htab="hof" class="htab-btn px-4 py-2 rounded-xl text-sm font-bold bg-gold text-navy whitespace-nowrap transition">
+                            <i class="fa-solid fa-medal mr-1.5"></i> Hall of Fame
+                        </button>
+                        <button onclick="setHonorsTab('scholarship')" data-htab="scholarship" class="htab-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-slate-200 hover:bg-white/20 whitespace-nowrap transition">
+                            <i class="fa-solid fa-graduation-cap mr-1.5"></i> Jerry Farro Youth Scholarship
+                        </button>
+                        <button onclick="setHonorsTab('records')" data-htab="records" class="htab-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-slate-200 hover:bg-white/20 whitespace-nowrap transition">
+                            <i class="fa-solid fa-trophy mr-1.5"></i> Association Records
+                        </button>
+                        <button onclick="setHonorsTab('yearbook')" data-htab="yearbook" class="htab-btn px-4 py-2 rounded-xl text-sm font-semibold bg-white/10 text-slate-200 hover:bg-white/20 whitespace-nowrap transition">
+                            <i class="fa-solid fa-book-open mr-1.5"></i> Yearbook &amp; Pin Dust
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                
+                <!-- SUB-TAB: HALL OF FAME -->
+                <div id="htab-content-hof" class="space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <div class="max-w-2xl">
+                            <span class="text-xs font-extrabold uppercase tracking-widest text-gold-dark">CHUSBC Hall of Fame</span>
+                            <h2 class="font-display text-2xl sm:text-3xl font-bold text-navy uppercase mt-1">Hall of Fame Inductees</h2>
+                            <p class="text-slate-600 text-sm mt-2">Inductees as listed on chusbc.org. Select a name to open their bio.</p>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="https://chusbc.org/wp-content/uploads/2023/02/chusbc-hall-of-fame-requirements-updated-22023.pdf" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-navy hover:bg-navy-light text-white font-bold px-5 py-3 rounded-xl text-sm transition">
+                                <i class="fa-solid fa-file-pdf text-gold"></i> HOF Requirements (Feb 2023)
+                            </a>
+                            <button disabled class="inline-flex items-center gap-2 bg-slate-100 text-slate-400 font-bold px-5 py-3 rounded-xl text-sm border border-slate-200"><i class="fa-solid fa-clock"></i> Nomination Form — Coming Soon</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start" id="hof-grid">
+                        <!-- Rendered via JS from js/site-data.js -->
+                    </div>
+                </div>
+
+                <!-- SUB-TAB: JERRY FARRO SCHOLARSHIP -->
+                <div id="htab-content-scholarship" class="hidden space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <div class="max-w-2xl">
+                            <span class="text-xs font-extrabold uppercase tracking-widest text-gold-dark">Youth Scholarship</span>
+                            <h2 class="font-display text-2xl sm:text-3xl font-bold text-navy uppercase mt-1">Jerry Farro Youth Scholarship</h2>
+                            <p class="text-slate-600 text-sm mt-2">Recipients as listed on chusbc.org. Select a name to open their bio.</p>
+                        </div>
+                        <button disabled class="inline-flex items-center gap-2 bg-slate-100 text-slate-400 font-bold px-5 py-3 rounded-xl text-sm border border-slate-200 self-start md:self-auto"><i class="fa-solid fa-clock"></i> Application — Coming Soon</button>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="px-6 py-4 border-b border-slate-100 bg-slate-50/60 font-bold text-navy text-sm uppercase tracking-wide">Scholarship Recipients</div>
+                        <div class="divide-y divide-slate-100" id="scholarship-list"></div>
+                    </div>
+                </div>
+
+                <!-- SUB-TAB: ASSOCIATION RECORDS -->
+                <div id="htab-content-records" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                        <div class="w-14 h-14 rounded-2xl bg-gold-light text-gold-dark flex items-center justify-center mx-auto mb-4"><i class="fa-solid fa-trophy text-2xl"></i></div>
+                        <h2 class="font-display text-2xl sm:text-3xl font-bold text-navy uppercase">Association Records Coming Soon</h2>
+                        <p class="text-slate-600 text-sm sm:text-base mt-3">We&rsquo;re compiling verified CHUSBC association records (high games, series and team scores). Until they&rsquo;re published here, USBC honor scores, averages and awards can be looked up on bowl.com.</p>
+                        <div class="mt-6 flex flex-wrap justify-center gap-3">
+                            <a href="https://bowl.com" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-navy hover:bg-navy-light text-white font-bold px-5 py-3 rounded-xl text-sm transition">Visit bowl.com <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gold"></i></a>
+                            <a href="https://webapps.bowl.com/USBCFindA/Home/Member" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-navy font-bold px-5 py-3 rounded-xl text-sm border border-slate-200 transition">Find a Member</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUB-TAB: YEARBOOK & PIN DUST ARCHIVES -->
+                <div id="htab-content-yearbook" class="hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 flex flex-col">
+                            <span class="text-xs font-extrabold uppercase tracking-widest text-gold-dark">Annual Averages</span>
+                            <h3 class="font-display text-2xl font-bold text-navy uppercase mt-1">CHUSBC Yearbook</h3>
+                            <p class="text-slate-600 text-sm mt-2 leading-relaxed">Season yearbook for the Cecil Harford USBC Association. For current averages and membership, use USBC&rsquo;s Find a Member on bowl.com.</p>
+                            <div class="mt-6 space-y-3">
+                                <a href="https://chusbc.org/wp-content/uploads/2025/09/2024-2025-chusbc-yearbook.pdf" target="_blank" rel="noopener" class="w-full flex items-center justify-between gap-3 bg-slatebg hover:bg-slate-200 text-navy font-bold px-5 py-3.5 rounded-xl border border-slate-200 text-sm transition">
+                                    <span><i class="fa-solid fa-book text-gold-dark mr-2"></i> 2024–2025 CHUSBC Yearbook</span><span class="text-xs text-slate-500">View PDF <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></span>
+                                </a>
+                                <a href="https://webapps.bowl.com/USBCFindA/Home/Member" target="_blank" rel="noopener" class="w-full flex items-center justify-between gap-3 bg-slatebg hover:bg-slate-200 text-navy font-bold px-5 py-3.5 rounded-xl border border-slate-200 text-sm transition">
+                                    <span><i class="fa-solid fa-magnifying-glass text-gold-dark mr-2"></i> bowl.com Find a Member</span><span class="text-xs text-slate-500">bowl.com <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="bg-navy text-white rounded-2xl shadow-sm p-6 sm:p-8 flex flex-col relative overflow-hidden">
+                            <div class="lane-stripes absolute inset-0 pointer-events-none"></div>
+                            <div class="relative">
+                                <span class="text-xs font-extrabold uppercase tracking-widest text-gold">Historical Newsletter</span>
+                                <h3 class="font-display text-2xl font-bold uppercase mt-1">Pin Dust Archives</h3>
+                                <p class="text-slate-300 text-sm mt-2 leading-relaxed">Digitized issues of <em>Pin Dust</em>, the Harford County Women&rsquo;s Bowling Association newsletter, from 1962 through 2016.</p>
+                                <div class="mt-6 space-y-3">
+                                    <a href="https://chusbc.org/pin-dust-archives-harford-county-womens-bowling-association/" target="_blank" rel="noopener" class="w-full flex items-center justify-between gap-3 bg-gold hover:bg-gold-hover text-navy font-bold px-5 py-3.5 rounded-xl text-sm transition">
+                                        <span><i class="fa-solid fa-newspaper mr-2"></i> Browse Pin Dust Archives</span><span class="text-xs">chusbc.org <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></span>
+                                    </a>
+                                    <button disabled class="w-full flex items-center justify-between gap-3 bg-white/5 text-slate-400 font-bold px-5 py-3.5 rounded-xl border border-white/10 text-sm">
+                                        <span><i class="fa-solid fa-landmark mr-2"></i> Association History</span><span class="text-xs">Coming soon</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 4: ABOUT & BOARD
+        ====================================================================== -->
+        <section id="view-about" class="view-section hidden">
+            <div class="bg-navy text-white py-10 border-b border-white/10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-amber-400">Governance &amp; Leadership</span>
+                    <h1 class="font-display text-3xl sm:text-4xl font-bold uppercase mt-1">About &amp; Board of Directors</h1>
+                    <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl">
+                        Volunteers running USBC-certified tournaments, youth programs and association business across Cecil and Harford Counties.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+                
+                <!-- Official Mission Statement Callout -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border-l-4 border-gold shadow-sm">
+                    <div class="flex items-start gap-4">
+                        <div class="w-11 h-11 rounded-xl bg-gold-light text-gold-dark flex items-center justify-center shrink-0 mt-1">
+                            <i class="fa-solid fa-quote-left text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-display text-xl font-bold text-navy uppercase">Official Association Equal Opportunity &amp; Mission Statement</h2>
+                            <p class="text-slate-700 text-base sm:text-lg italic mt-2 leading-relaxed">
+                                “This association promotes the game of American Tenpins and provides an equal opportunity for all in the sport of bowling without regard to race, religion, age, gender, disability, or national origin.”
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Board of Directors Directory -->
+                <div>
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+                        <div>
+                            <span class="text-xs font-extrabold uppercase tracking-widest text-gold-dark">Leadership</span>
+                            <h2 class="font-display text-2xl sm:text-3xl font-bold text-navy uppercase mt-1">Officers &amp; Board of Directors</h2>
+                        </div>
+                        <a href="https://chusbc.org/board-history/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-bold text-navy hover:text-gold-dark self-start sm:self-auto">Board &amp; Association Information (chusbc.org) <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center mb-4"><i class="fa-solid fa-user-tie"></i></div>
+                                <h3 class="font-display text-xl font-bold text-navy uppercase">President</h3>
+                                <p class="text-xs text-slate-500 mt-1">Name to be listed after committee review</p>
+                            </div>
+                            <button onclick="switchView('contact')" class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-slatebg hover:bg-slate-200 text-navy font-bold py-2.5 rounded-xl text-xs border border-slate-200 transition"><i class="fa-solid fa-envelope text-gold-dark"></i> Contact</button>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center mb-4"><i class="fa-solid fa-user-group"></i></div>
+                                <h3 class="font-display text-xl font-bold text-navy uppercase">Vice President</h3>
+                                <p class="text-xs text-slate-500 mt-1">Name to be listed after committee review</p>
+                            </div>
+                            <button onclick="switchView('contact')" class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-slatebg hover:bg-slate-200 text-navy font-bold py-2.5 rounded-xl text-xs border border-slate-200 transition"><i class="fa-solid fa-envelope text-gold-dark"></i> Contact</button>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center mb-4"><i class="fa-solid fa-clipboard-list"></i></div>
+                                <h3 class="font-display text-xl font-bold text-navy uppercase">Association Manager</h3>
+                                <p class="text-xs text-slate-500 mt-1">Name to be listed after committee review</p>
+                            </div>
+                            <button onclick="switchView('contact')" class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-slatebg hover:bg-slate-200 text-navy font-bold py-2.5 rounded-xl text-xs border border-slate-200 transition"><i class="fa-solid fa-envelope text-gold-dark"></i> Contact</button>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center mb-4"><i class="fa-solid fa-children"></i></div>
+                                <h3 class="font-display text-xl font-bold text-navy uppercase">Youth Director</h3>
+                                <p class="text-xs text-slate-500 mt-1">Name to be listed after committee review</p>
+                            </div>
+                            <button onclick="switchView('contact')" class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-slatebg hover:bg-slate-200 text-navy font-bold py-2.5 rounded-xl text-xs border border-slate-200 transition"><i class="fa-solid fa-envelope text-gold-dark"></i> Contact</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Governance & USBC Resources -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                        <i class="fa-solid fa-scale-balanced text-2xl text-gold-dark"></i>
+                        <h3 class="font-display text-lg font-bold text-navy uppercase mt-3">Association Bylaws</h3>
+                        <p class="text-sm text-slate-600 mt-2">The CHUSBC bylaws will be posted here.</p>
+                        <button disabled class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-slate-400"><i class="fa-solid fa-clock"></i> Coming soon</button>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                        <i class="fa-solid fa-book text-2xl text-gold-dark"></i>
+                        <h3 class="font-display text-lg font-bold text-navy uppercase mt-3">USBC Playing Rules</h3>
+                        <p class="text-sm text-slate-600 mt-2">Playing rules, lane certification and league rules from the United States Bowling Congress.</p>
+                        <a href="https://bowl.com/rules" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-navy hover:text-gold-dark">bowl.com/rules <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                        <i class="fa-solid fa-clipboard-check text-2xl text-gold-dark"></i>
+                        <h3 class="font-display text-lg font-bold text-navy uppercase mt-3">League Secretaries</h3>
+                        <p class="text-sm text-slate-600 mt-2">A local league secretary packet is planned. Questions now? Email the Association Manager.</p>
+                        <a href="mailto:cecilharford@gmail.com" class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-navy hover:text-gold-dark">cecilharford@gmail.com</a>
+                    </div>
+                </div>
+
+                <!-- Technology Partner -->
+                <div class="bg-navy-dark rounded-2xl overflow-hidden shadow-sm grid grid-cols-1 md:grid-cols-[260px_1fr] items-center">
+                    <div class="bg-[#1d2530] flex items-center justify-center p-6 h-full">
+                        <img src="assets/legacy-computing-logo.jpg" alt="Legacy Computing Services logo" class="w-48 h-auto rounded-lg">
+                    </div>
+                    <div class="p-6 sm:p-8 text-white">
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-gold">Technology Partner</span>
+                        <h3 class="font-display text-2xl font-bold uppercase mt-1">Legacy Computing Services</h3>
+                        <p class="text-slate-300 text-sm mt-2 leading-relaxed max-w-2xl">Legacy Computing Services is the technology partner for the Cecil Harford USBC Association, supporting the association&rsquo;s website and technology.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- =====================================================================
+             VIEW 5: CONTACT
+        ====================================================================== -->
+        <section id="view-contact" class="view-section hidden">
+            <div class="bg-navy text-white py-10 border-b border-white/10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-amber-400">Get In Touch</span>
+                    <h1 class="font-display text-3xl sm:text-4xl font-bold uppercase mt-1">Contact Cecil Harford USBC</h1>
+                    <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl">
+                        Have a question about tournament entries, average verification, youth scholarships, or association records? Reach out directly below.
+                    </p>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    
+                    <!-- Contact Form -->
+                    <div class="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+                        <h2 class="font-display text-2xl font-bold text-navy uppercase mb-1">Send an Inquiry</h2>
+                        <p class="text-sm text-slate-500 mb-6">Pick a department and we&rsquo;ll address your message to the right inbox. <strong>Submitting opens your own email app</strong> with the message filled in — nothing is sent from this page until you press Send there.</p>
+
+                        <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div><label for="contact-name" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5">Your Name *</label><input id="contact-name" type="text" required autocomplete="name" class="w-full px-4 py-3 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:border-navy"></div>
+                                <div><label for="contact-email" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5">Email Address *</label><input id="contact-email" type="email" required autocomplete="email" class="w-full px-4 py-3 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:border-navy"></div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div><label for="contact-category" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5">Department *</label>
+                                    <select id="contact-category" class="w-full px-4 py-3 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:border-navy font-semibold text-slate-700" onchange="updateContactRoute()">
+                                        <option value="tournaments">Tournaments (Entries &amp; Squads)</option>
+                                        <option value="youth">Youth Bowling &amp; Scholarships</option>
+                                        <option value="manager">Association Manager (Membership &amp; Averages)</option>
+                                        <option value="web">Website, Results &amp; Records</option>
+                                    </select>
+                                </div>
+                                <div><label for="contact-usbc" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5">USBC Member ID (optional)</label><input id="contact-usbc" type="text" class="w-full px-4 py-3 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:border-navy"></div>
+                            </div>
+                            <div><label for="contact-message" class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5">Message *</label><textarea id="contact-message" rows="5" required class="w-full px-4 py-3 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold focus:border-navy"></textarea></div>
+                            <p class="text-xs text-slate-500" id="contact-route-note">Goes to: <strong>cecilharford@gmail.com</strong> (Association Manager)</p>
+                            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white font-bold px-6 py-3.5 rounded-xl text-sm transition">
+                                <i class="fa-solid fa-envelope-open-text text-gold"></i>
+                                <span>Open in My Email App</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Direct Info & Official Facebook Card -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+                            <h3 class="font-display text-xl font-bold text-navy uppercase">Association Directory</h3>
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-slatebg text-gold-dark flex items-center justify-center shrink-0"><i class="fa-solid fa-envelope"></i></div>
+                                <div>
+                                    <div class="text-xs font-bold uppercase text-slate-500">Association Manager</div>
+                                    <a href="mailto:cecilharford@gmail.com" class="text-base font-bold text-navy hover:text-gold-dark transition break-all">cecilharford@gmail.com</a>
+                                    <p class="text-xs text-slate-500 mt-0.5">Tournaments, squads, membership, averages &amp; youth</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-slatebg text-gold-dark flex items-center justify-center shrink-0"><i class="fa-solid fa-laptop-code"></i></div>
+                                <div>
+                                    <div class="text-xs font-bold uppercase text-slate-500">Webmaster</div>
+                                    <a href="mailto:chusbcwebmaster@gmail.com" class="text-base font-bold text-navy hover:text-gold-dark transition break-all">chusbcwebmaster@gmail.com</a>
+                                    <p class="text-xs text-slate-500 mt-0.5">Website, posted results &amp; records</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3.5">
+                                <div class="w-10 h-10 rounded-xl bg-slatebg text-navy flex items-center justify-center shrink-0"><i class="fa-solid fa-map-pin"></i></div>
+                                <div>
+                                    <div class="text-xs font-bold uppercase text-slate-500">Jurisdiction</div>
+                                    <div class="text-base font-bold text-navy">Cecil &amp; Harford Counties, MD</div>
+                                    <p class="text-xs text-slate-500 mt-0.5">Centers in Forest Hill, Aberdeen &amp; Aberdeen Proving Ground</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Official Facebook Integration Card -->
+                        <div class="bg-gradient-to-br from-[#1877F2] to-[#0C5DC7] text-white rounded-2xl p-6 shadow-md">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-11 h-11 rounded-xl bg-white/15 flex items-center justify-center text-2xl">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </div>
+                                <div>
+                                    <div class="text-xs font-bold uppercase tracking-wider text-blue-100">Social Updates</div>
+                                    <h3 class="font-display text-xl font-bold uppercase">Follow CHUSBC on Facebook</h3>
+                                </div>
+                            </div>
+                            <p class="text-blue-50 text-sm leading-relaxed mb-5">
+                                Tournament updates, schedule changes and photos are posted on the association&rsquo;s official Facebook page.
+                            </p>
+                            <a href="https://www.facebook.com/chusbca/" target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-white text-[#1877F2] hover:bg-blue-50 font-bold py-3 px-4 rounded-xl text-sm transition shadow">
+                                <span>Visit facebook.com/chusbca</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =====================================================================
+         FOOTER
+    ====================================================================== -->
+    <footer class="bg-navy-dark text-slate-300 border-t-4 border-gold mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-white/10">
+                <!-- Col 1 -->
+                <div class="space-y-3">
+                    <div class="font-display text-2xl font-bold text-white uppercase">
+                        Cecil Harford <span class="text-gold">USBC</span>
+                    </div>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        This association promotes the game of American Tenpins and provides an equal opportunity for all in the sport of bowling without regard to race, religion, age, gender, disability, or national origin.
+                    </p>
+                    <div class="pt-1">
+                        <a href="https://www.facebook.com/chusbca/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-bold text-white bg-white/10 hover:bg-white/20 px-3.5 py-2 rounded-lg transition">
+                            <i class="fa-brands fa-facebook text-blue-400"></i> Facebook (@chusbca)
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Col 2 -->
+                <div>
+                    <h4 class="font-display text-sm font-bold text-white uppercase tracking-wider mb-3">Quick Navigation</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><button onclick="switchView('tournaments', 'upcoming')" class="hover:text-white transition">Upcoming Tournaments</button></li>
+                        <li><button onclick="switchView('tournaments', 'results')" class="hover:text-white transition">Results Archive</button></li>
+                        <li><button onclick="switchView('tournaments', 'youth')" class="hover:text-white transition">Youth Bowling</button></li>
+                        <li><button onclick="switchView('honors', 'hof')" class="hover:text-white transition">Hall of Fame</button></li>
+                        <li><button onclick="switchView('contact')" class="hover:text-white transition">Contact Us</button></li>
+                        <li><a href="directors.html" class="hover:text-white transition"><i class="fa-solid fa-lock text-[10px] mr-1 text-gold"></i>Director Login</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 -->
+                <div>
+                    <h4 class="font-display text-sm font-bold text-white uppercase tracking-wider mb-3">Association Centers</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><strong class="block text-slate-200">Forest Hill Lanes</strong>Forest Hill &middot; <a href="tel:4108384477" class="hover:text-white whitespace-nowrap">410-838-4477</a></li>
+                        <li><strong class="block text-slate-200">Harford Lanes</strong>Aberdeen &middot; <a href="tel:4102723555" class="hover:text-white whitespace-nowrap">410-272-3555</a></li>
+                        <li><strong class="block text-slate-200">Brewner Lanes – APG</strong>Aberdeen Proving Ground &middot; <a href="tel:4102784041" class="hover:text-white whitespace-nowrap">410-278-4041</a></li>
+                    </ul>
+                    <div class="mt-4 text-xs text-slate-400 space-y-1">
+                        <div><a href="mailto:cecilharford@gmail.com" class="text-gold hover:text-white">cecilharford@gmail.com</a> &middot; Association Manager</div>
+                        <div><a href="mailto:chusbcwebmaster@gmail.com" class="text-gold hover:text-white">chusbcwebmaster@gmail.com</a> &middot; Webmaster</div>
+                    </div>
+                </div>
+
+                <!-- Col 4 -->
+                <div>
+                    <h4 class="font-display text-sm font-bold text-white uppercase tracking-wider mb-3">National Affiliation</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed mb-3">
+                        Local association of the United States Bowling Congress (USBC).
+                    </p>
+                    <a href="https://bowl.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-gold hover:text-white">
+                        <span>Visit BOWL.com (USBC National)</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Technology Partner band -->
+            <div class="py-6 border-b border-white/10 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+                <img src="assets/legacy-computing-logo.jpg" alt="Legacy Computing Services" class="h-16 w-auto rounded-md">
+                <div class="text-center sm:text-left">
+                    <div class="text-[11px] font-extrabold uppercase tracking-widest text-gold">Technology Partner</div>
+                    <div class="text-sm text-slate-200 font-semibold">Legacy Computing Services</div>
+                    <div class="text-xs text-slate-400">Website and technology partner for the Cecil Harford USBC Association.</div>
+                </div>
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 text-center sm:text-left">
+                <div>&copy; 2026 Cecil Harford USBC Association (chusbc.org). All rights reserved.</div>
+                <div>Serving USBC bowlers in Cecil &amp; Harford Counties, Maryland</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- =====================================================================
+         SQUAD INQUIRY (opens a pre-filled email; nothing is sent from the page)
+    ====================================================================== -->
+    <div id="squad-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-dark/75 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="squad-modal-title">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto">
+            <div class="bg-navy text-white px-6 py-4 flex items-center justify-between border-b-4 border-gold">
+                <span id="squad-modal-title" class="font-display text-lg font-bold uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-bowling-ball text-gold"></i> Squad Inquiry</span>
+                <button onclick="closeModal('squad-modal')" class="w-9 h-9 rounded-lg hover:bg-white/10" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form onsubmit="handleSquadSubmit(event)" class="p-6 space-y-4">
+                <p class="text-xs text-slate-600 bg-gold-light border border-gold/40 rounded-xl p-3">This opens <strong>your email app</strong> with a message to <strong>cecilharford@gmail.com</strong>. Official entries still go by the mail-in entry form (see the PDF).</p>
+                <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="squad-event-name">Tournament</label>
+                    <input id="squad-event-name" type="text" readonly class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-navy font-bold text-sm"></div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="squad-name">Captain / Bowler Name *</label>
+                        <input id="squad-name" type="text" required autocomplete="name" class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold"></div>
+                    <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="squad-contact">Phone or Email *</label>
+                        <input id="squad-contact" type="text" required class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold"></div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="squad-events">Events</label>
+                        <select id="squad-events" class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm">
+                            <option>Team</option><option>Singles &amp; Doubles</option><option>Team + Singles &amp; Doubles</option><option>Not sure yet</option>
+                        </select></div>
+                    <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="squad-pref">Preferred date / squad</label>
+                        <input id="squad-pref" type="text" placeholder="e.g. Sat Nov 21, Team 4:00 pm" class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold"></div>
+                </div>
+                <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="squad-notes">Team name / notes</label>
+                    <textarea id="squad-notes" rows="3" class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold"></textarea></div>
+                <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-1">
+                    <button type="button" onclick="closeModal('squad-modal')" class="px-5 py-3 rounded-xl border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50">Cancel</button>
+                    <button type="submit" class="px-5 py-3 rounded-xl bg-gold hover:bg-gold-hover text-navy font-bold text-sm inline-flex items-center justify-center gap-2"><i class="fa-solid fa-envelope-open-text"></i> Open in My Email App</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast (bottom-left so it doesn't collide with the John chat button) -->
+    <div id="toast-banner" class="fixed bottom-5 left-5 z-50 hidden items-center gap-3 bg-navy-dark text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-gold/40 max-w-sm" role="status">
+        <i class="fa-solid fa-envelope-circle-check text-gold"></i>
+        <span id="toast-message" class="text-sm font-medium">Action completed.</span>
+    </div>
+
+    <!-- Data + app logic -->
+    <script src="js/site-data.js"></script>
+    <script src="js/app.js"></script>
+    <!-- John chat widget. Demo mode by default. Live Gemini mode ONLY if a local, git-ignored gemini-local.js sets
+         window.ASK_CHUSBC_GEMINI_API_KEY; it is only requested on localhost so it is never fetched in production.
+         Plan: move John to Grok (xAI) behind a server-side proxy — never ship an API key to the browser. -->
+    <script>
+        if (/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) {
+            var gl = document.createElement('script'); gl.src = 'gemini-local.js'; gl.onerror = function () {}; document.head.appendChild(gl);
+        }
+    </script>
+    <script src="js/ask-chusbc.js" defer></script>
+</body>
+</html>

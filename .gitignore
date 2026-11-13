@@ -1,0 +1,10 @@
+# Local-only secrets — NEVER commit
+gemini-local.js
+*.local.js
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+shots/

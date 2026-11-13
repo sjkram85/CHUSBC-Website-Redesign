@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Director Portal | Cecil Harford USBC</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="assets/logo.jpg">
+    <!-- PREVIEW: Tailwind Play CDN. Production should use the compiled Tailwind build (see README.md). -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: {
+            colors: { navy: { DEFAULT: '#0F1E36', light: '#1A3154', dark: '#091221' }, slatebg: '#F4F6F9',
+                      gold: { DEFAULT: '#F2C230', hover: '#E0AE14', dark: '#8A6500', light: '#FDF6DC' } },
+            fontFamily: { display: ['Oswald', 'sans-serif'], sans: ['Plus Jakarta Sans', 'sans-serif'] } } } };
+    </script>
+</head>
+<body class="bg-slatebg text-slate-800 font-sans antialiased flex flex-col min-h-screen">
+    <header class="bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            <a href="index.html" class="flex items-center gap-3">
+                <span class="w-12 h-12 rounded-xl bg-navy flex items-center justify-center relative overflow-hidden shrink-0">
+                    <span class="absolute bottom-0 inset-x-0 h-1.5 bg-gold"></span>
+                    <i class="fa-solid fa-bowling-ball text-white text-xl"></i>
+                </span>
+                <span class="font-display font-bold text-xl sm:text-2xl text-navy uppercase leading-none">Cecil Harford <span class="text-gold-dark">USBC</span></span>
+            </a>
+            <a href="index.html" class="inline-flex items-center gap-2 text-sm font-bold text-navy hover:text-gold-dark"><i class="fa-solid fa-arrow-left"></i> Back to site</a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <div class="bg-navy text-white py-10 border-b-4 border-gold">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-gold"><i class="fa-solid fa-lock mr-1"></i> Board &amp; Directors</span>
+                <h1 class="font-display text-3xl sm:text-4xl font-bold uppercase mt-1">Director Portal</h1>
+                <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl">Quick links for Cecil Harford USBC board members and tournament directors.</p>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 border-l-4 border-l-gold shadow-sm">
+                <h2 class="font-display text-xl font-bold text-navy uppercase">How sign-in works</h2>
+                <p class="text-sm text-slate-600 mt-2">Sign-in happens through <strong>Google</strong> — this site doesn&rsquo;t store passwords. Each link opens in a new tab; sign in with the CHUSBC association account or a Google account the association has shared access with.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <a href="https://mail.google.com" target="_blank" rel="noopener" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition group">
+                    <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center"><i class="fa-solid fa-envelope"></i></div>
+                    <h3 class="font-display text-lg font-bold text-navy uppercase mt-4">Email</h3>
+                    <p class="text-sm text-slate-600 mt-1">CHUSBC association Gmail.</p>
+                    <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-gold-dark group-hover:underline">Open Gmail <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></span>
+                </a>
+                <a href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition group">
+                    <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center"><i class="fa-solid fa-folder-closed"></i></div>
+                    <h3 class="font-display text-lg font-bold text-navy uppercase mt-4">Directors Folder</h3>
+                    <p class="text-sm text-slate-600 mt-1">Private board files and drafts (sign in with the CHUSBC account).</p>
+                    <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-gold-dark group-hover:underline">Open folder <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></span>
+                </a>
+                <a href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition group">
+                    <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center"><i class="fa-solid fa-trophy"></i></div>
+                    <h3 class="font-display text-lg font-bold text-navy uppercase mt-4">Tournament Results</h3>
+                    <p class="text-sm text-slate-600 mt-1">CHUSBC Results folder (Prism publishes certified PDFs here).</p>
+                    <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-gold-dark group-hover:underline">Open results <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></span>
+                </a>
+                <a href="https://calendar.google.com" target="_blank" rel="noopener" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition group">
+                    <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center"><i class="fa-solid fa-calendar-days"></i></div>
+                    <h3 class="font-display text-lg font-bold text-navy uppercase mt-4">Calendar</h3>
+                    <p class="text-sm text-slate-600 mt-1">Association tournaments &amp; events.</p>
+                    <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-bold text-gold-dark group-hover:underline">Open Calendar <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></span>
+                </a>
+            </div>
+
+            <p class="text-sm text-slate-600 bg-white rounded-2xl p-5 border border-slate-200"><strong>Note:</strong> A true password-protected members area (meeting notes, unpublished results) will be added when the site moves to its permanent host. Need access to the Directors folder? Email <a href="mailto:chusbcwebmaster@gmail.com" class="font-bold text-navy hover:text-gold-dark">chusbcwebmaster@gmail.com</a>.</p>
+        </div>
+    </main>
+
+    <footer class="bg-navy-dark text-slate-400 border-t-4 border-gold text-xs">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>&copy; 2026 Cecil Harford USBC Association &middot; <a href="index.html#contact" class="text-gold hover:text-white">Contact</a></div>
+            <div class="flex items-center gap-3">
+                <img src="assets/legacy-computing-logo.jpg" alt="" class="h-9 w-auto rounded">
+                <span><span class="text-gold font-bold uppercase tracking-wider">Technology Partner</span> &middot; Legacy Computing Services</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
