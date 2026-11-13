@@ -21,7 +21,13 @@ window.CHUSBC_DATA = {
 ,
    "location": "Forest Hill Lanes, 1 Maurice Drive, Forest Hill, MD 21050",
    "sessions": [{ "start": "2026-11-14", "end": "2026-11-15" }, { "start": "2026-11-21", "end": "2026-11-22" }],
-   "deadline": "2026-11-09"
+   "deadline": "2026-11-09",
+   "entry": {
+    "maxBowlers": 5,
+    "events": ["Team", "Singles & Doubles", "All-Events (Handicap)", "All-Events (Scratch)"],
+    "squads": ["Team – Sat Nov 14 or 21, 4:00 pm", "Team – Sun Nov 15 or 22, 1:00 pm", "Singles & Doubles – Sat Nov 14 or 21, 1:00 pm", "Singles & Doubles – Sun Nov 15 or 22, 10:00 am"],
+    "note": "Squad times from the 2026 entry form."
+   }
   },
   {
    "id": "womens-champ",
@@ -39,7 +45,13 @@ window.CHUSBC_DATA = {
 ,
    "location": "Brewner Lanes, Bldg 2342, Aberdeen Proving Ground, MD 21005",
    "sessions": [{ "start": "2027-03-13", "end": "2027-03-14" }],
-   "deadline": ""
+   "deadline": "",
+   "entry": {
+    "maxBowlers": 4,
+    "events": ["Team", "Singles", "Doubles", "All-Events"],
+    "squads": [],
+    "note": "Squad times for the new March 13–14, 2027 dates are not posted yet; the entry form still shows the original October times."
+   }
   },
   {
    "id": "lighthouse-ladies",
@@ -386,6 +398,34 @@ window.CHUSBC_DATA = {
    "file": "46th-annual-chusbc-youth-championship-official-results.pdf"
   }
  ],
+ "board": {
+  "season": "2025–2026",
+  "source": "CHUSBC 2025–2026 Board of Directors list (names, positions and term years only)",
+  "officers": [
+   { "role": "President", "name": "John Vananzo", "term": 2026, "duty": "Presides at all meetings, acts as spokesperson for the association and appoints committees with board approval." },
+   { "role": "1st Vice President", "name": "Cathy Dunn", "term": 2027, "duty": "Presides at meetings when the president is absent and performs other duties prescribed by the board or requested by the president." },
+   { "role": "2nd Vice President", "name": "Carol Phillabaum", "term": 2026, "duty": "Officer of the board. Duties as set by the board in the association’s operations manual." },
+   { "role": "Sergeant at Arms", "name": "Robert Phillabaum", "term": 2027, "duty": "Officer of the board. Duties as set by the board in the association’s operations manual." }
+  ],
+  "manager": { "role": "Association Manager", "name": "Evelyn (Evie) Testerman", "duty": "Selected by and accountable to the board. Serves as the board’s ex officio non-voting secretary/treasurer." },
+  "directors": [
+   { "seat": 1, "name": "Ella Patrick", "term": 2027 },
+   { "seat": 2, "name": "Donna Vernon", "term": 2026 },
+   { "seat": 3, "name": "Ethan Gray", "term": 2027 },
+   { "seat": 4, "name": "Scott Kramer", "term": 2026 },
+   { "seat": 5, "name": "Michael Ford", "term": 2027 },
+   { "seat": 6, "name": "", "term": 2026 },
+   { "seat": 7, "name": "James D Bonham", "term": 2027 },
+   { "seat": 8, "name": "Marie Plummer", "term": 2026 },
+   { "seat": 9, "name": "Rick Malley", "term": 2027 },
+   { "seat": 10, "name": "Richard Burdette", "term": 2026 },
+   { "seat": 11, "name": "Michelle Carvallo", "term": 2027 },
+   { "seat": 12, "name": "Chuck Tillman", "term": 2026 },
+   { "seat": 13, "name": "Melissa Button", "term": 2027 },
+   { "seat": 14, "name": "Rachael Letscher", "term": 2026 },
+   { "seat": 15, "name": "Dianne Swauger", "term": 2027 }
+  ]
+ },
  "hallOfFame": [
   {
    "category": "Superior Performance & Meritorious Service",

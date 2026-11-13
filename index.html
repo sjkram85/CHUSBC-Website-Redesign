@@ -720,13 +720,24 @@
 
                 <!-- SUB-TAB: ASSOCIATION RECORDS -->
                 <div id="htab-content-records" class="hidden space-y-6">
-                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 sm:p-10 text-center max-w-3xl mx-auto">
-                        <div class="w-14 h-14 rounded-2xl bg-gold-light text-gold-dark flex items-center justify-center mx-auto mb-4"><i class="fa-solid fa-trophy text-2xl"></i></div>
-                        <h2 class="font-display text-2xl sm:text-3xl font-bold text-navy uppercase">Association Records Coming Soon</h2>
-                        <p class="text-slate-600 text-sm sm:text-base mt-3">We&rsquo;re compiling verified CHUSBC association records (high games, series and team scores). Until they&rsquo;re published here, USBC honor scores, averages and awards can be looked up on bowl.com.</p>
-                        <div class="mt-6 flex flex-wrap justify-center gap-3">
-                            <a href="https://bowl.com" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-navy hover:bg-navy-light text-white font-bold px-5 py-3 rounded-xl text-sm transition">Visit bowl.com <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gold"></i></a>
-                            <a href="https://webapps.bowl.com/USBCFindA/Home/Member" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-navy font-bold px-5 py-3 rounded-xl text-sm border border-slate-200 transition">Find a Member</a>
+                    <div class="max-w-2xl">
+                        <span class="text-xs font-extrabold uppercase tracking-widest text-gold-dark">Association Records</span>
+                        <h2 class="font-display text-2xl sm:text-3xl font-bold text-navy uppercase mt-1">High Scores &amp; Records</h2>
+                        <p class="text-slate-600 text-sm mt-2">Verified CHUSBC records will be listed here once the association confirms them. Nothing is posted until it&rsquo;s verified.</p>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="divide-y divide-slate-100">
+                            <div class="px-6 py-4 flex items-center justify-between gap-3"><span class="font-bold text-navy text-sm"><i class="fa-solid fa-star text-gold-dark w-5"></i> 300 Games</span><span class="text-xs font-bold uppercase text-slate-400">Coming soon</span></div>
+                            <div class="px-6 py-4 flex items-center justify-between gap-3"><span class="font-bold text-navy text-sm"><i class="fa-solid fa-fire text-gold-dark w-5"></i> 800 Series</span><span class="text-xs font-bold uppercase text-slate-400">Coming soon</span></div>
+                            <div class="px-6 py-4 flex items-center justify-between gap-3"><span class="font-bold text-navy text-sm"><i class="fa-solid fa-trophy text-gold-dark w-5"></i> Tournament Records (team, doubles, singles)</span><span class="text-xs font-bold uppercase text-slate-400">Coming soon</span></div>
+                            <div class="px-6 py-4 flex items-center justify-between gap-3"><span class="font-bold text-navy text-sm"><i class="fa-solid fa-children text-gold-dark w-5"></i> Youth Records</span><span class="text-xs font-bold uppercase text-slate-400">Coming soon</span></div>
+                        </div>
+                    </div>
+                    <div class="bg-gold-light border border-gold/40 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <p class="text-sm text-slate-700"><strong class="text-navy">Bowled a record or know of one?</strong> Send the bowler, score, date, center and league or tournament, and the association will verify it.</p>
+                        <div class="flex flex-wrap gap-2 shrink-0">
+                            <button onclick="switchView('contact', 'records')" class="inline-flex items-center gap-2 bg-navy hover:bg-navy-light text-white font-bold px-5 py-2.5 rounded-xl text-sm transition"><i class="fa-solid fa-paper-plane text-gold"></i> Submit a Record</button>
+                            <a href="https://webapps.bowl.com/USBCFindA/Home/Member" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-navy font-bold px-5 py-2.5 rounded-xl text-sm border border-slate-200 transition">USBC honor scores (bowl.com)</a>
                         </div>
                     </div>
                 </div>
@@ -809,39 +820,16 @@
                         </div>
                         <a href="https://chusbc.org/board-history/" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm font-bold text-navy hover:text-gold-dark self-start sm:self-auto">Board &amp; Association Information (chusbc.org) <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></a>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-                            <div>
-                                <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center mb-4"><i class="fa-solid fa-user-tie"></i></div>
-                                <h3 class="font-display text-xl font-bold text-navy uppercase">President</h3>
-                                <p class="text-xs text-slate-500 mt-1">Name to be listed after committee review</p>
-                            </div>
-                            <button onclick="switchView('contact')" class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-slatebg hover:bg-slate-200 text-navy font-bold py-2.5 rounded-xl text-xs border border-slate-200 transition"><i class="fa-solid fa-envelope text-gold-dark"></i> Contact</button>
-                        </div>
-                        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-                            <div>
-                                <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center mb-4"><i class="fa-solid fa-user-group"></i></div>
-                                <h3 class="font-display text-xl font-bold text-navy uppercase">Vice President</h3>
-                                <p class="text-xs text-slate-500 mt-1">Name to be listed after committee review</p>
-                            </div>
-                            <button onclick="switchView('contact')" class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-slatebg hover:bg-slate-200 text-navy font-bold py-2.5 rounded-xl text-xs border border-slate-200 transition"><i class="fa-solid fa-envelope text-gold-dark"></i> Contact</button>
-                        </div>
-                        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-                            <div>
-                                <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center mb-4"><i class="fa-solid fa-clipboard-list"></i></div>
-                                <h3 class="font-display text-xl font-bold text-navy uppercase">Association Manager</h3>
-                                <p class="text-xs text-slate-500 mt-1">Name to be listed after committee review</p>
-                            </div>
-                            <button onclick="switchView('contact')" class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-slatebg hover:bg-slate-200 text-navy font-bold py-2.5 rounded-xl text-xs border border-slate-200 transition"><i class="fa-solid fa-envelope text-gold-dark"></i> Contact</button>
-                        </div>
-                        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-                            <div>
-                                <div class="w-11 h-11 rounded-xl bg-navy text-gold flex items-center justify-center mb-4"><i class="fa-solid fa-children"></i></div>
-                                <h3 class="font-display text-xl font-bold text-navy uppercase">Youth Director</h3>
-                                <p class="text-xs text-slate-500 mt-1">Name to be listed after committee review</p>
-                            </div>
-                            <button onclick="switchView('contact')" class="mt-5 w-full inline-flex items-center justify-center gap-2 bg-slatebg hover:bg-slate-200 text-navy font-bold py-2.5 rounded-xl text-xs border border-slate-200 transition"><i class="fa-solid fa-envelope text-gold-dark"></i> Contact</button>
-                        </div>
+                    <p class="text-sm text-slate-600 -mt-3 mb-5 max-w-3xl">The board has 19 positions: 4 officers and 15 directors, serving two-year terms. The Association Manager is appointed by the board. <span class="text-slate-500">Photos are pending committee approval.</span></p>
+                    <div id="board-officers" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4"><!-- Rendered from js/site-data.js --></div>
+                    <div class="mt-8 flex items-baseline justify-between gap-3">
+                        <h3 class="font-display text-xl font-bold text-navy uppercase">Directors</h3>
+                        <span id="board-season" class="text-xs font-bold text-gold-dark"></span>
+                    </div>
+                    <div id="board-directors" class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3"></div>
+                    <div class="mt-6 bg-white rounded-2xl border border-slate-200 p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <p class="text-sm text-slate-600"><strong class="text-navy">Need to reach the board?</strong> Messages go to the Association Manager, who passes them to the right board member.</p>
+                        <button onclick="switchView('contact', 'manager')" class="inline-flex items-center justify-center gap-2 bg-navy hover:bg-navy-light text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shrink-0"><i class="fa-solid fa-envelope text-gold"></i> Contact the Association</button>
                     </div>
                 </div>
 
@@ -850,8 +838,8 @@
                     <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                         <i class="fa-solid fa-scale-balanced text-2xl text-gold-dark"></i>
                         <h3 class="font-display text-lg font-bold text-navy uppercase mt-3">Association Bylaws</h3>
-                        <p class="text-sm text-slate-600 mt-2">The CHUSBC bylaws will be posted here.</p>
-                        <button disabled class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-slate-400"><i class="fa-solid fa-clock"></i> Coming soon</button>
+                        <p class="text-sm text-slate-600 mt-2">Board composition, officer duties, meetings, committees and delegates (revised 8-1-25).</p>
+                        <a href="docs/CHUSBC-Bylaws.pdf" target="_blank" rel="noopener" class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-navy hover:text-gold-dark"><i class="fa-solid fa-file-pdf text-gold-dark"></i> CHUSBC Bylaws (PDF)</a>
                     </div>
                     <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                         <i class="fa-solid fa-book text-2xl text-gold-dark"></i>
@@ -916,6 +904,7 @@
                                         <option value="youth">Youth Bowling &amp; Scholarships</option>
                                         <option value="manager">Association Manager (Membership &amp; Averages)</option>
                                         <option value="web">Website, Results &amp; Records</option>
+                                        <option value="records">Submit an Association Record</option>
                                         <option value="feedback">Provide Feedback (Site Ideas &amp; Enhancements)</option>
                                     </select>
                                 </div>
@@ -1159,6 +1148,47 @@
     <!-- =====================================================================
          SQUAD INQUIRY (opens a pre-filled email; nothing is sent from the page)
     ====================================================================== -->
+    <div id="entry-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-dark/75 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="entry-modal-title">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[94vh] overflow-y-auto">
+            <div class="bg-navy text-white px-6 py-4 flex items-center justify-between border-b-4 border-gold sticky top-0 z-10">
+                <span id="entry-modal-title" class="font-display text-lg font-bold uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-pen-to-square text-gold"></i> Enter Online</span>
+                <button type="button" onclick="closeModal('entry-modal')" class="w-9 h-9 rounded-lg hover:bg-white/10" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="entry-form" onsubmit="handleEntrySubmit(event)" class="p-5 sm:p-6 space-y-4">
+                <input id="entry-tid" type="hidden">
+                <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="entry-event-name">Tournament</label>
+                    <input id="entry-event-name" type="text" readonly class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-navy font-bold text-sm"></div>
+                <fieldset><legend class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5">Events *</legend>
+                    <div id="entry-events" class="flex flex-wrap gap-2"></div></fieldset>
+                <fieldset><legend class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5">Bowlers <span class="normal-case font-semibold text-slate-400">(name, USBC member ID, entering average)</span></legend>
+                    <div id="entry-bowlers" class="space-y-2"></div></fieldset>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="entry-team">Team name</label>
+                        <input id="entry-team" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold"></div>
+                    <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="entry-center">Home center / league</label>
+                        <input id="entry-center" type="text" class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold"></div>
+                    <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="entry-email">Captain email *</label>
+                        <input id="entry-email" type="email" required autocomplete="email" class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold"></div>
+                    <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="entry-phone">Captain phone *</label>
+                        <input id="entry-phone" type="tel" required autocomplete="tel" class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold"></div>
+                </div>
+                <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="entry-squad">Squad choice</label>
+                    <select id="entry-squad" class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm"></select>
+                    <p id="entry-squad-note" class="text-xs text-slate-500 mt-1"></p></div>
+                <div><label class="block text-xs font-bold uppercase tracking-wide text-slate-600 mb-1.5" for="entry-notes">Notes <span class="normal-case font-semibold text-slate-400">(2nd squad choice, doubles pairings, etc.)</span></label>
+                    <textarea id="entry-notes" rows="2" class="w-full px-3.5 py-2.5 rounded-xl bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold"></textarea></div>
+                <div class="text-xs text-slate-700 bg-gold-light border border-gold/40 rounded-xl p-3 space-y-1">
+                    <p><i class="fa-solid fa-envelope text-gold-dark mr-1"></i> Sending opens <strong>your email app</strong> with this entry addressed to <strong>cecilharford@gmail.com</strong>. Nothing is sent until you press Send.</p>
+                    <p><i class="fa-solid fa-money-check text-gold-dark mr-1"></i> <strong>No payment is taken online.</strong> Payment instructions per entry form. <a id="entry-pdf" href="#" target="_blank" rel="noopener" class="underline font-bold text-navy">Open the entry form (PDF)</a></p>
+                </div>
+                <div class="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-1">
+                    <button type="button" onclick="closeModal('entry-modal')" class="px-5 py-3 rounded-xl border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50">Cancel</button>
+                    <button type="submit" class="px-5 py-3 rounded-xl bg-gold hover:bg-gold-hover text-navy font-bold text-sm inline-flex items-center justify-center gap-2"><i class="fa-solid fa-envelope-open-text"></i> Send Entry by Email</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div id="squad-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-dark/75 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="squad-modal-title">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[92vh] overflow-y-auto">
             <div class="bg-navy text-white px-6 py-4 flex items-center justify-between border-b-4 border-gold">

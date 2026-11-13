@@ -90,6 +90,49 @@
                 </a>
             </div>
 
+            <!-- John's Upload Helper (demo): runs entirely in the browser. No upload, no Drive API, no keys. -->
+            <section id="upload-helper" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" aria-labelledby="uh-title">
+                <div class="bg-navy text-white px-5 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-4 border-gold">
+                    <h2 id="uh-title" class="font-display text-lg sm:text-xl font-bold uppercase tracking-wide flex items-center gap-2"><i class="fa-solid fa-robot text-gold"></i> John&rsquo;s Upload Helper</h2>
+                    <span class="self-start sm:self-auto text-[11px] font-extrabold uppercase tracking-wider bg-gold text-navy px-2.5 py-1 rounded-md">Demo</span>
+                </div>
+                <p class="px-5 sm:px-6 pt-4 text-xs text-slate-600"><strong class="text-navy">Demo &mdash; real uploads after the site moves to approved hosting with director sign-in.</strong> Nothing leaves this page: a picked file is only read for its name, never uploaded or sent.</p>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 p-5 sm:p-6">
+                    <form id="uh-form" class="space-y-3 text-sm" onsubmit="return false">
+                        <label class="block"><span class="block text-xs font-bold text-slate-600 mb-1"><span class="text-gold-dark">John:</span> What kind of document is it?</span>
+                            <select id="uh-type" class="w-full px-3 py-2.5 rounded-xl bg-slatebg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-gold">
+                                <option value="entry">Entry form</option><option value="results">Certified results</option><option value="minutes">Meeting minutes</option>
+                                <option value="flyer">Flyer / notice</option><option value="financial">Financial / treasurer</option><option value="other">Other</option>
+                            </select></label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <label class="block col-span-2" id="uh-event-wrap"><span class="block text-xs font-bold text-slate-600 mb-1"><span class="text-gold-dark">John:</span> Which event?</span>
+                                <select id="uh-event" class="w-full px-3 py-2.5 rounded-xl bg-slatebg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-gold"></select></label>
+                            <label class="block"><span class="block text-xs font-bold text-slate-600 mb-1">Year</span>
+                                <input id="uh-year" type="number" min="2000" max="2100" class="w-full px-3 py-2.5 rounded-xl bg-slatebg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-gold"></label>
+                        </div>
+                        <label class="block" id="uh-date-wrap"><span class="block text-xs font-bold text-slate-600 mb-1"><span class="text-gold-dark">John:</span> Meeting or document date?</span>
+                            <input id="uh-date" type="date" class="w-full px-3 py-2.5 rounded-xl bg-slatebg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-gold"></label>
+                        <label class="block" id="uh-other-wrap"><span class="block text-xs font-bold text-slate-600 mb-1">Short title</span>
+                            <input id="uh-title-in" type="text" maxlength="60" placeholder="e.g. Annual meeting notice" class="w-full px-3 py-2.5 rounded-xl bg-slatebg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-gold"></label>
+                        <fieldset><legend class="block text-xs font-bold text-slate-600 mb-1"><span class="text-gold-dark">John:</span> Public, or board-only?</legend>
+                            <div class="flex gap-2">
+                                <label class="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-slate-300 font-semibold text-navy cursor-pointer has-[:checked]:bg-gold-light has-[:checked]:border-gold"><input type="radio" name="uh-vis" value="public" checked class="accent-[#0F1E36]"> Public</label>
+                                <label class="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2 rounded-xl border border-slate-300 font-semibold text-navy cursor-pointer has-[:checked]:bg-gold-light has-[:checked]:border-gold"><input type="radio" name="uh-vis" value="board" class="accent-[#0F1E36]"> Board-only</label>
+                            </div></fieldset>
+                        <label class="block"><span class="block text-xs font-bold text-slate-600 mb-1">Pick the file (optional, name only)</span>
+                            <input id="uh-file" type="file" class="block w-full text-xs text-slate-600 file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-navy file:text-white file:font-bold"></label>
+                    </form>
+                    <div class="bg-slatebg rounded-2xl border border-slate-200 p-4 sm:p-5 text-sm space-y-3" aria-live="polite">
+                        <p class="text-xs font-extrabold uppercase tracking-widest text-gold-dark"><i class="fa-solid fa-comment-dots mr-1"></i> John says</p>
+                        <div><div class="text-xs font-bold text-slate-500">Destination folder</div><code id="uh-out-folder" class="block mt-0.5 font-mono text-xs sm:text-sm text-navy break-all"></code></div>
+                        <div><div class="text-xs font-bold text-slate-500">Standard filename</div><code id="uh-out-name" class="block mt-0.5 font-mono text-xs sm:text-sm text-navy break-all"></code></div>
+                        <div id="uh-out-orig" class="text-xs text-slate-500 hidden"></div>
+                        <div id="uh-out-public" class="rounded-xl px-3 py-2 text-xs font-semibold"></div>
+                        <p id="uh-out-note" class="text-xs text-slate-600"></p>
+                    </div>
+                </div>
+            </section>
+
             <p class="text-sm text-slate-600 bg-white rounded-2xl p-5 border border-slate-200"><strong>Note:</strong> A true password-protected members area (meeting notes, unpublished results) will be added when the site moves to its permanent host. Need access to the Directors folder? Email <a href="mailto:chusbcwebmaster@gmail.com" class="font-bold text-navy hover:text-gold-dark">chusbcwebmaster@gmail.com</a>.</p>
         </div>
     </main>
@@ -103,5 +146,61 @@
             </div>
         </div>
     </footer>
+    <script src="js/site-data.js"></script>
+    <script>
+    /* John's Upload Helper (demo). Local only: no network calls, no Drive API, no keys. */
+    (function () {
+      var $ = function (id) { return document.getElementById(id); };
+      var T = ((window.CHUSBC_DATA || {}).tournaments || []);
+      var slug = function (t) {
+        return String(t || '').replace(/[\u2018\u2019']/g, '').replace(/\b\d+(st|nd|rd|th)\b/gi, '').replace(/\b(annual|chusbc|cecil|harford|usbc)\b/gi, '')
+          .replace(/\(.*?\)/g, '').replace(/[^A-Za-z0-9]+/g, ' ').trim().split(/\s+/).filter(Boolean)
+          .map(function (w) { return w.charAt(0).toUpperCase() + w.slice(1); }).join('_') || 'Document';
+      };
+      $('uh-event').innerHTML = T.map(function (t) { return '<option value="' + slug(t.title) + '">' + t.title.replace(/[<>&]/g, '') + '</option>'; }).join('') + '<option value="">Not event-specific</option>';
+      var now = new Date(); $('uh-year').value = now.getFullYear();
+      $('uh-date').value = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+      var fileExt = 'pdf', fileName = '';
+      var RULES = {
+        entry:     { folder: 'Entry Forms/{Y}', name: '{Y}_{E}_entry_form', vis: null, note: 'Public entry forms are linked from the tournament card.' },
+        results:   { folder: 'CHUSBC Results/{Y}', name: '{E}_certified_results', vis: 'public', note: 'Certified results go public when Prism publishes them (results-index.json). Unofficial standings stay board-only until certified.' },
+        minutes:   { folder: 'Directors/Minutes/{Y}', name: '{D}_minutes', vis: 'board', note: 'Minutes are always board-only.' },
+        flyer:     { folder: 'Flyers & Notices/{Y}', name: '{D}_{E}_flyer', vis: null, note: 'Public flyers can be shared on the site and Facebook.' },
+        financial: { folder: 'Directors/Treasurer/{Y}', name: '{D}_{E}_financial', vis: 'board', note: 'Financial and treasurer files are always board-only.' },
+        other:     { folder: '{V}/{Y}', name: '{D}_{E}', vis: null, note: 'Not sure where it belongs? Ask the webmaster.' }
+      };
+      function update() {
+        var type = $('uh-type').value, r = RULES[type];
+        var year = /^\d{4}$/.test($('uh-year').value) ? $('uh-year').value : String(now.getFullYear());
+        var date = $('uh-date').value || year;
+        var visPicked = (document.querySelector('input[name="uh-vis"]:checked') || {}).value || 'public';
+        var vis = r.vis || visPicked;
+        var ev = $('uh-event').value;
+        var custom = slug($('uh-title-in').value);
+        var E = type === 'other' ? (custom !== 'Document' ? custom : (ev || 'Document')) : (ev || (custom !== 'Document' ? custom : (type === 'financial' ? 'Report' : 'General')));
+        var fill = function (t) { return t.replace('{Y}', year).replace('{D}', date).replace('{E}', E).replace('{V}', vis === 'public' ? 'Public Documents' : 'Directors/Other'); };
+        $('uh-date-wrap').classList.toggle('hidden', !/\{D\}/.test(r.name));
+        $('uh-other-wrap').classList.toggle('hidden', !(type === 'other' || type === 'flyer' || type === 'financial'));
+        document.querySelectorAll('input[name="uh-vis"]').forEach(function (x) { x.disabled = !!r.vis; if (r.vis) x.checked = x.value === r.vis; });
+        $('uh-out-folder').textContent = fill(r.folder) + '/';
+        $('uh-out-name').textContent = fill(r.name) + '.' + fileExt;
+        $('uh-out-orig').classList.toggle('hidden', !fileName);
+        $('uh-out-orig').textContent = fileName ? 'Your file \u201c' + fileName + '\u201d would be renamed to the name above.' : '';
+        var pub = vis === 'public';
+        $('uh-out-public').className = 'rounded-xl px-3 py-2 text-xs font-semibold ' + (pub ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-white text-slate-600 border border-slate-200');
+        $('uh-out-public').innerHTML = pub ? '<i class="fa-solid fa-globe mr-1"></i> Will appear on the public site' + (type === 'results' ? ' once Prism certifies it.' : '.') : '<i class="fa-solid fa-lock mr-1"></i> Board-only. Will NOT appear on the public site.';
+        $('uh-out-note').textContent = r.note;
+      }
+      $('uh-file').addEventListener('change', function () {
+        var f = this.files && this.files[0];           // read the name only; the file is never read or sent
+        fileName = f ? f.name : '';
+        var m = fileName.match(/\.([A-Za-z0-9]{1,5})$/); fileExt = m ? m[1].toLowerCase() : 'pdf';
+        update();
+      });
+      ['uh-type', 'uh-event', 'uh-year', 'uh-date', 'uh-title-in'].forEach(function (id) { $(id).addEventListener('input', update); $(id).addEventListener('change', update); });
+      document.querySelectorAll('input[name="uh-vis"]').forEach(function (x) { x.addEventListener('change', update); });
+      update();
+    })();
+    </script>
 </body>
 </html>

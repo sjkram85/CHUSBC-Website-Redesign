@@ -10,7 +10,8 @@
     youth:       { to: EMAIL.manager, label: 'Association Manager', subject: 'Youth bowling / scholarship question' },
     manager:     { to: EMAIL.manager, label: 'Association Manager', subject: 'Membership / averages question' },
     web:         { to: EMAIL.web,     label: 'Webmaster',           subject: 'Website / results question' },
-    feedback:    { to: EMAIL.web,     label: 'Webmaster',           subject: 'Site feedback / enhancement idea' }
+    feedback:    { to: EMAIL.web,     label: 'Webmaster',           subject: 'Site feedback / enhancement idea' },
+    records:     { to: EMAIL.manager, label: 'Association Manager', subject: 'Association record submission' }
   };
   const PRISM_INDEX_URL = './results-index.json';
   const EVENTS_URL = './events.json';
@@ -342,7 +343,10 @@
             <p class="text-xs text-slate-500 mt-3 leading-relaxed">${esc(ev.summary)}</p>
             ${up && calButtons(up, 'sm') ? `<div class="mt-3 flex flex-wrap items-center gap-1">${calButtons(up, 'sm')}</div>` : ''}
           </div>
-          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center gap-2">${primary}${secondary}</div>
+          <div class="mt-5 pt-4 border-t border-slate-100 space-y-2">
+            ${entryButton(ev, up)}
+            <div class="flex items-center gap-2">${primary}${secondary}</div>
+          </div>
         </div>`;
       }).join('') : `<div class="col-span-full bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-500 text-sm">No matching tournaments found for &ldquo;${esc(q)}&rdquo;.</div>`;
       if (D.calendarUrl && !q) {
@@ -362,6 +366,91 @@
         </div>
         ${resultLinks(r, false)}
       </div>`).join('') : '<div class="p-8 text-center text-slate-500 text-sm">No results match your filter.</div>';
+  }
+
+  /* ---------------- Online entry (mailto prefill, no payment) ---------------- */
+  function entryButton(ev, up) {
+    if (ev.status !== 'upcoming' || !ev.entry) return '';
+    const closed = up && deadlineInfo(up) && deadlineInfo(up).passed;
+    if (closed || (up && isOver(up))) return `<div class="w-full text-center text-[11px] font-bold uppercase tracking-wide text-slate-400 bg-slate-50 border border-slate-200 rounded-xl py-2"><i class="fa-solid fa-lock mr-1"></i> Online entry closed &middot; deadline passed</div>`;
+    return `<button type="button" onclick="openEntryModal('${esc(ev.id)}')" class="w-full bg-gold hover:bg-gold-hover text-navy font-bold py-2.5 px-3 rounded-xl text-xs transition flex items-center justify-center gap-1.5"><i class="fa-solid fa-pen-to-square"></i> Enter Online</button>`;
+  }
+  const inputCls = 'w-full px-3 py-2 rounded-lg bg-slatebg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-gold';
+  function openEntryModal(id) {
+    const t = D.tournaments.find((x) => x.id === id);
+    if (!t || !t.entry) return;
+    const cfg = t.entry;
+    document.getElementById('entry-form').reset();
+    document.getElementById('entry-tid').value = t.id;
+    document.getElementById('entry-event-name').value = t.title + ' · ' + t.dates;
+    document.getElementById('entry-events').innerHTML = cfg.events.map((e, i) => `
+      <label class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-300 bg-white text-sm font-semibold text-navy cursor-pointer has-[:checked]:bg-gold-light has-[:checked]:border-gold">
+        <input type="checkbox" name="entry-event" value="${esc(e)}" class="accent-[#0F1E36]"> ${esc(e)}</label>`).join('');
+    document.getElementById('entry-bowlers').innerHTML = Array.from({ length: cfg.maxBowlers || 1 }, (_, i) => `
+      <div class="grid grid-cols-12 gap-2 items-center">
+        <span class="col-span-1 text-xs font-bold text-slate-500 text-center">${i + 1}</span>
+        <input aria-label="Bowler ${i + 1} name" placeholder="Bowler name${i === 0 ? ' *' : ''}" ${i === 0 ? 'required' : ''} class="col-span-11 sm:col-span-5 ${inputCls} entry-b-name">
+        <input aria-label="Bowler ${i + 1} USBC member ID" placeholder="USBC ID" class="col-span-6 col-start-2 sm:col-start-auto sm:col-span-4 ${inputCls} entry-b-id">
+        <input aria-label="Bowler ${i + 1} average" placeholder="Avg" inputmode="numeric" class="col-span-5 sm:col-span-2 ${inputCls} entry-b-avg">
+      </div>`).join('');
+    const sq = document.getElementById('entry-squad');
+    sq.innerHTML = '<option value="">' + (cfg.squads.length ? 'Select a squad' : 'To be confirmed') + '</option>' + cfg.squads.map((x) => `<option>${esc(x)}</option>`).join('');
+    document.getElementById('entry-squad-note').textContent = cfg.note || '';
+    const pdf = document.getElementById('entry-pdf');
+    pdf.href = t.entryUrl || t.pageUrl || '#'; pdf.classList.toggle('hidden', !(t.entryUrl || t.pageUrl));
+    openModal('entry-modal');
+  }
+  function handleEntrySubmit(e) {
+    e.preventDefault();
+    const t = D.tournaments.find((x) => x.id === document.getElementById('entry-tid').value);
+    if (!t) return;
+    const events = Array.from(document.querySelectorAll('input[name="entry-event"]:checked')).map((x) => x.value);
+    if (!events.length) { triggerToast('Pick at least one event.'); return; }
+    const v = (id) => document.getElementById(id).value.trim();
+    const rows = Array.from(document.querySelectorAll('#entry-bowlers > div')).map((r, i) => {
+      const n = r.querySelector('.entry-b-name').value.trim(); if (!n) return '';
+      const id = r.querySelector('.entry-b-id').value.trim(), avg = r.querySelector('.entry-b-avg').value.trim();
+      return (i + 1) + '. ' + n + ' | USBC ID: ' + (id || '—') + ' | Avg: ' + (avg || '—');
+    }).filter(Boolean);
+    const lead = rows.length ? rows[0].replace(/^1\. /, '').split(' | ')[0] : '';
+    const href = mailto(ROUTES.tournaments.to, 'Online entry – ' + t.title + ' – ' + (v('entry-team') || lead), [
+      'Tournament: ' + t.title + ' (' + t.dates + ')', 'Events: ' + events.join(', '), '', 'Bowlers:', ...rows, '',
+      v('entry-team') && 'Team name: ' + v('entry-team'), v('entry-center') && 'Home center / league: ' + v('entry-center'),
+      'Captain email: ' + v('entry-email'), 'Captain phone: ' + v('entry-phone'), 'Squad choice: ' + (v('entry-squad') || 'To be confirmed'),
+      v('entry-notes') && 'Notes: ' + v('entry-notes'), '', 'Payment: per the entry form instructions (no payment taken online).',
+      '(Sent from the chusbc.org online entry form)']);
+    closeModal('entry-modal');
+    window.location.href = href;
+    triggerToast('Opening your email app with your entry to ' + ROUTES.tournaments.to + '. Press Send there to submit it.');
+  }
+
+  /* ---------------- Board of Directors ---------------- */
+  const avatar = '<div class="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0" title="Photo pending committee approval"><i class="fa-solid fa-user text-slate-300 text-xl"></i></div>';
+  function renderBoard() {
+    const B = D.board; const o = document.getElementById('board-officers');
+    if (!B || !o) return;
+    const termTag = (y) => y ? `<span class="inline-block mt-1 text-[11px] font-bold uppercase tracking-wide text-gold-dark">Term ends ${esc(y)}</span>` : '';
+    const card = (p, appointed) => `
+      <div class="bg-white rounded-2xl p-5 border ${appointed ? 'border-gold/60' : 'border-slate-200'} shadow-sm relative overflow-hidden flex flex-col">
+        <div class="absolute top-0 inset-x-0 h-1 ${appointed ? 'bg-navy' : 'bg-gold'}"></div>
+        <div class="flex items-center gap-3">${avatar}<div class="min-w-0">
+          <div class="text-[11px] font-extrabold uppercase tracking-widest text-gold-dark">${esc(p.role)}</div>
+          <div class="font-display text-lg font-bold text-navy uppercase leading-tight">${esc(p.name || 'To be announced')}</div>
+          ${appointed ? '<span class="inline-block mt-1 text-[11px] font-bold uppercase tracking-wide text-slate-500">Appointed by the board</span>' : termTag(p.term)}
+        </div></div>
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">${esc(p.duty || '')}</p>
+      </div>`;
+    o.innerHTML = B.officers.map((p) => card(p, false)).join('') + (B.manager ? card(B.manager, true) : '');
+    document.getElementById('board-season').textContent = B.season ? B.season + ' board' : '';
+    document.getElementById('board-directors').innerHTML = B.directors.map((d) => `
+      <div class="bg-white rounded-xl border border-slate-200 px-4 py-3 flex items-center gap-3">
+        ${avatar.replace('w-12 h-12', 'w-10 h-10').replace('text-xl', 'text-base')}
+        <div class="min-w-0">
+          <div class="text-[11px] font-bold uppercase tracking-wide text-slate-500">Director #${esc(d.seat)}</div>
+          <div class="font-bold text-sm ${d.name ? 'text-navy' : 'text-slate-400 italic'}">${esc(d.name || 'Vacant')}</div>
+          ${termTag(d.term)}
+        </div>
+      </div>`).join('');
   }
 
   /* ---------------- Honors ---------------- */
@@ -438,13 +527,13 @@
     t.classList.remove('hidden'); t.classList.add('flex');
     clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.classList.add('hidden'); t.classList.remove('flex'); }, 6000);
   }
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal('squad-modal'); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal('squad-modal'); closeModal('entry-modal'); } });
 
   Object.assign(window, { switchView, toggleMobileMenu, setTournamentFilter, renderTournaments, setHonorsTab,
-    openSquadModal, closeModal, handleSquadSubmit, handleContactSubmit, updateContactRoute, triggerToast, openFeedback, downloadIcs });
+    openSquadModal, closeModal, handleSquadSubmit, handleContactSubmit, updateContactRoute, triggerToast, openFeedback, downloadIcs, openEntryModal, handleEntrySubmit });
 
   document.addEventListener('DOMContentLoaded', () => {
-    fillYearFilter(); renderHomeLatestResults(); renderTournaments(); renderHonors();
+    fillYearFilter(); renderHomeLatestResults(); renderTournaments(); renderHonors(); renderBoard();
     routeFromHash(true);
     window.addEventListener('hashchange', () => routeFromHash(false));
     renderCalendarBits();
