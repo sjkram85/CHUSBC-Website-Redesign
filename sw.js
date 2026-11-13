@@ -8,7 +8,7 @@
  *   - App shell: precached on install
  *   - Live feeds (results-index.json, events.json) and HTML navigations:
  *     network-first, so a new Prism publish or calendar refresh shows up on the
- *     next load. The page adds ?v=<minute> to feed requests to skip the CDN
+ *     next load. The page adds ?v=<minute> to feed requests to skip the HTTP
  *     cache; the worker stores ONE copy per feed (query stripped) for offline use.
  *   - Static assets (js/css/images/fonts): cache-first
  *   - directors.html: network-only, never cached (staff portal)

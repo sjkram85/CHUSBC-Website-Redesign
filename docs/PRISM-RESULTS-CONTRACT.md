@@ -7,9 +7,10 @@ The site lists certified tournament results that Prism publishes. This file is t
 1. Prism commits an updated `results-index.json` to the **`main` branch** of
    `github.com/sjkram85/CHUSBC-Website-Redesign` (repo root).
 2. GitHub Pages redeploys automatically, usually in **about 1 minute**.
-3. On the next page load the site fetches `./results-index.json` (network-first,
-   with a per-minute cache-busting query, so neither the Pages CDN nor the app's
-   service worker serves an old copy while the visitor is online).
+3. On the next page load the site fetches `./results-index.json` network-first
+   (`cache: no-store` plus a per-minute query), so neither the browser nor the
+   app's service worker serves an old copy while the visitor is online. GitHub
+   Pages refreshes its CDN on each deploy; allow a few minutes in the worst case.
 
 No other step is needed. Nobody retypes results.
 

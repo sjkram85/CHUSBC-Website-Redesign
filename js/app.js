@@ -21,7 +21,7 @@
 
   const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const safeUrl = (u) => (/^https:\/\//i.test(u || '') || /^\.?\/?[\w\-./]+\.pdf$/i.test(u || '')) ? u : '';
-  // Live feeds: add a per-minute query so the GitHub Pages CDN (max-age=600) and the browser never hand back an old copy.
+  // Live feeds: no-store + a per-minute query so the browser never reuses an old copy (GitHub Pages purges its CDN on each deploy).
   const feedUrl = (u) => u + '?v=' + Math.floor(Date.now() / 60000);
   const normTitle = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ')
     .replace(/\b(certified|official|final|unofficial|results?|standings|the)\b/g, ' ').replace(/\s+/g, ' ').trim();
