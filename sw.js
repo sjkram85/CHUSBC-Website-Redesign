@@ -6,7 +6,7 @@
  *
  * Strategies:
  *   - App shell: precached on install
- *   - Live feeds (results-index.json, events.json) and HTML navigations:
+ *   - Live feeds (results-index.json, events.json, live.json) and HTML navigations:
  *     network-first, so a new Prism publish or calendar refresh shows up on the
  *     next load. The page adds ?v=<minute> to feed requests to skip the HTTP
  *     cache; the worker stores ONE copy per feed (query stripped) for offline use.
@@ -16,7 +16,7 @@
  *
  * Bump CACHE_VERSION whenever the shell files change so old caches are dropped.
  */
-const CACHE_VERSION = 'chusbc-pwa-v9';
+const CACHE_VERSION = 'chusbc-pwa-v10';
 const SHELL_CACHE = 'chusbc-shell-' + CACHE_VERSION;
 const RUNTIME_CACHE = 'chusbc-runtime-' + CACHE_VERSION;
 
@@ -69,7 +69,7 @@ function isDirectors(url) {
 }
 
 function isLiveFeed(url) {
-  return /\/(?:results-index|events)\.json$/i.test(url.pathname);
+  return /\/(?:results-index|events|live)\.json$/i.test(url.pathname);
 }
 
 // One cache entry per feed, whatever cache-busting query the page used.
@@ -114,7 +114,7 @@ self.addEventListener('activate', (event) => {
     // page load fetched them before this worker was in control, the data
     // is still available offline until the next network-first refresh.
     const cache = await caches.open(RUNTIME_CACHE);
-    await Promise.all(['./results-index.json', './events.json'].map(async (path) => {
+    await Promise.all(['./results-index.json', './events.json', './live.json'].map(async (path) => {
       try {
         const res = await fetch(new Request(resolve(path), { cache: 'no-store' }));
         if (res && res.ok) await cache.put(resolve(path), res);

@@ -229,7 +229,10 @@
              VIEW 1: HOME
         ====================================================================== -->
         <section id="view-home" class="view-section">
-            
+
+            <!-- LIVE from the Lanes: hidden unless live.json says live=true (see docs/LIVE-STREAM.md) -->
+            <div id="live-home" class="live-slot hidden" data-live-variant="home"></div>
+
             <!-- Hero Banner -->
             <div class="hero-pattern text-white relative overflow-hidden">
                 <div class="lane-stripes absolute inset-0 pointer-events-none"></div>
@@ -617,7 +620,10 @@
 
             <!-- Dynamic Tournament Cards & Results Container -->
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
-                
+
+                <!-- LIVE from the Lanes (hidden unless live) -->
+                <div id="live-tournaments" class="live-slot hidden" data-live-variant="tournaments"></div>
+
                 <!-- Events Grid -->
                 <div id="tournament-events-wrapper">
                     <div class="flex items-center justify-between mb-5">

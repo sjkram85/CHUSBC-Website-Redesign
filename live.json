@@ -1,0 +1,7 @@
+{
+  "_note": "Set live to true and paste a PUBLIC Facebook live video URL to show the LIVE from the Lanes player. Set live back to false afterwards. See docs/LIVE-STREAM.md.",
+  "live": false,
+  "title": "",
+  "event": "",
+  "facebook_video_url": ""
+}

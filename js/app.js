@@ -15,6 +15,7 @@
   };
   const PRISM_INDEX_URL = './results-index.json';
   const EVENTS_URL = './events.json';
+  const LIVE_URL = './live.json';
   const NEW_DAYS = 14;
   let prismResults = [];
   let calEvents = [];
@@ -368,6 +369,53 @@
       </div>`).join('') : '<div class="p-8 text-center text-slate-500 text-sm">No results match your filter.</div>';
   }
 
+  /* ---------------- LIVE from the Lanes (Facebook Live embed, hidden unless live.json says so) ---------------- */
+  function fbVideoUrl(u) {
+    try {
+      const x = new URL(String(u || '').trim());
+      if (x.protocol !== 'https:') return '';
+      if (!/^(?:www\.|m\.|web\.)?facebook\.com$|^fb\.watch$/i.test(x.hostname)) return '';
+      if (x.hostname !== 'fb.watch' && !/\/videos\/|\/watch\/?|\/live\/|\/reel\//i.test(x.pathname + '/')) return '';
+      return x.href;
+    } catch (e) { return ''; }
+  }
+  function renderLive(cfg) {
+    const url = cfg && cfg.live === true ? fbVideoUrl(cfg.facebook_video_url) : '';
+    document.querySelectorAll('.live-slot').forEach((el) => {
+      if (!url) { el.innerHTML = ''; el.classList.add('hidden'); return; }
+      const title = typeof cfg.title === 'string' && cfg.title.trim() ? cfg.title.trim().slice(0, 120) : 'Live from the lanes';
+      const ev = typeof cfg.event === 'string' ? cfg.event.trim().slice(0, 120) : '';
+      const src = 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url) + '&show_text=false&width=1280';
+      const home = el.dataset.liveVariant === 'home';
+      el.innerHTML = `
+      <div class="${home ? 'bg-navy-dark border-b-4 border-gold' : 'bg-navy-dark rounded-2xl overflow-hidden shadow-sm border-b-4 border-gold'}">
+        <div class="${home ? 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5' : 'p-4 sm:p-5'} grid grid-cols-1 md:grid-cols-[1fr_minmax(0,560px)] gap-4 md:gap-6 items-center">
+          <div class="text-white">
+            <div class="inline-flex items-center gap-2 bg-red-600 text-white text-[11px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md">
+              <span class="relative flex w-2 h-2"><span class="absolute inline-flex w-full h-full rounded-full bg-white opacity-75 animate-ping"></span><span class="relative inline-flex w-2 h-2 rounded-full bg-white"></span></span> Live
+            </div>
+            <h2 class="font-display text-2xl sm:text-3xl font-bold uppercase mt-2 leading-tight">Live from the Lanes</h2>
+            <p class="text-slate-200 text-sm sm:text-base font-semibold mt-1">${esc(title)}</p>
+            ${ev ? `<p class="text-gold text-xs font-bold uppercase tracking-wide mt-1">${esc(ev)}</p>` : ''}
+            <a href="${esc(url)}" target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-2 bg-gold hover:bg-gold-hover text-navy font-bold text-xs px-4 py-2 rounded-xl transition"><i class="fa-brands fa-facebook"></i> Watch on Facebook</a>
+          </div>
+          <div class="relative w-full rounded-xl overflow-hidden bg-black ring-1 ring-white/10" style="aspect-ratio:16/9">
+            <iframe src="${esc(src)}" title="${esc(title)} (Facebook Live)" class="absolute inset-0 w-full h-full" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
+          </div>
+        </div>
+      </div>`;
+      el.classList.remove('hidden');
+    });
+  }
+  async function loadLive() {
+    let cfg = null;
+    try {
+      const res = await fetch(feedUrl(LIVE_URL), { cache: 'no-store' });
+      if (res.ok) cfg = await res.json();
+    } catch (err) { cfg = null; /* missing, offline or bad JSON: show nothing */ }
+    renderLive(cfg);
+  }
+
   /* ---------------- Online entry (mailto prefill, no payment) ---------------- */
   function entryButton(ev, up) {
     if (ev.status !== 'upcoming' || !ev.entry) return '';
@@ -539,5 +587,8 @@
     renderCalendarBits();
     loadPrismResults();
     loadEvents();
+    loadLive();
+    // Re-check every 2 minutes while the page is visible, so the player appears/disappears without a reload.
+    setInterval(() => { if (document.visibilityState === 'visible') loadLive(); }, 120000);
   });
 })();
